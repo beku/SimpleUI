@@ -24,9 +24,9 @@
 #include "../misc/misc.h"
 	
 	#include "../xml/sXml.h"
-//#define EnableLog
+#define EnableLog
 #ifdef EnableLog
-#define WriteLog fWriteLog
+#define WriteLog fprintf
 #else
 #define WriteLog
 #endif
@@ -316,7 +316,7 @@ int CalculateTreeChildre(sXformsNode *head)
         count = count  + 1;
       }
     }
-    WriteLog("\n HEAD = %s, CHULDREN ARE %d",head->name, count);
+    WriteLog(stdout,"\n HEAD = %s, CHULDREN ARE %d",head->name, count);
     return count;
 }
 
@@ -341,17 +341,17 @@ int CalculateYPosition(Fl_Group *p, char *s){
 
 void PrintGroupDetails(Fl_Group *p)
 {
-  WriteLog("\n =================== %s ==============",p->label());
+  WriteLog(stdout,"\n =================== %s ==============",p->label());
   Fl_Widget *temp;
     //PrintWidgetDimensions(p);
-    WriteLog("\n NUBER OF CHILDREN = %d",p->children());
+    WriteLog(stdout,"\n NUBER OF CHILDREN = %d",p->children());
     if(p->children()){
       for(int i = 0; i < p->children(); i++){
           temp=p->child(i);
           //PrintWidgetDimensions(temp);
         }
     }
-  WriteLog("\n ================================");
+  WriteLog(stdout,"\n ================================");
 }
 /* ========================================================================================== */
 
@@ -361,7 +361,7 @@ int sFltkUIHandler_f_FrameHandler(sXformsNode *head,struct sCbData **CallBackDat
 	int height = 0;
 	head -> meta_info = (char *)"1";
 	if(parent){
-	  WriteLog("\n [GROUP] %s",head->name);
+	  WriteLog(stdout,"\n [GROUP] %s",head->name);
     //TODO there was a sepator group here which separates this group from others
     CalculateTreeChildre(head);
     // TODO CalculateYPosition is being used to find number of children and then calculate height of parent. It is based on assumption
@@ -377,9 +377,9 @@ int sFltkUIHandler_f_FrameHandler(sXformsNode *head,struct sCbData **CallBackDat
 		//TODO calculate new height and adjust it's height
 		
 //		new_frame->resize(new_frame->x(),new_frame->y(),new_frame->w(),CalculateYPosition(new_frame,head->name) + V_SPACING);
-		WriteLog("\n ......(%d,%d,%d,%d)",new_frame->x(),new_frame->y(),new_frame->w(),new_frame->h());
+		WriteLog(stdout,"\n ......(%d,%d,%d,%d)",new_frame->x(),new_frame->y(),new_frame->w(),new_frame->h());
   		new_frame->box(FL_BORDER_BOX);
-//		PrintGroupDetails(new_frame);
+		PrintGroupDetails(new_frame);
 //		return new_frame->h();
 		frameCounter++;
 		return 0;
@@ -392,7 +392,7 @@ int sFltkUIHandler_f_FrameHandler(sXformsNode *head,struct sCbData **CallBackDat
 /* ========================================================================================== */
 
 int sFltkUIHandler_f_Select1Handler(sXformsNode *head,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func){
-  WriteLog("\n[%s]",__func__);
+  WriteLog(stdout,"\n[%s]",__func__);
 	Fl_Group *parent = Fl_Group::current();
 	head->meta_info = (char *)"1";
 	static int ddctr = 0;
@@ -431,7 +431,7 @@ int sFltkUIHandler_f_Select1Handler(sXformsNode *head,struct sCbData **CallBackD
 }
 
 int sFltkUIHandler_f_InputHandler(sXformsNode *head,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func){
-  WriteLog("\n[%s]",__func__);
+  WriteLog(stdout,"\n[%s]",__func__);
 	Fl_Group *parent = Fl_Group::current();
 	head->meta_info = (char *)"1";
 	static int inputctr = 0;
@@ -441,7 +441,7 @@ int sFltkUIHandler_f_InputHandler(sXformsNode *head,struct sCbData **CallBackDat
 	}
 	else{
 	char *name = head->name;
-	WriteLog("\n[%s] name = %s",__func__,name);
+	WriteLog(stdout,"\n[%s] name = %s",__func__,name);
 	          if( get_pointer_to_user_data_by_name(name,(*CallBackData)) != 0 )
 	          {
 	              name = sAppendString(name,int2str[inputctr]);
@@ -481,7 +481,7 @@ int sFltkUIHandler_f_InputHandler(sXformsNode *head,struct sCbData **CallBackDat
 }
 
 int sFltkUIHandler_f_RangeHandler(sXformsNode *head,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func){
-  WriteLog("\n[%s]",__func__);
+  WriteLog(stdout,"\n[%s]",__func__);
 	Fl_Group *parent = Fl_Group::current();
 	head->meta_info = (char *)"1";
 	static int rangectr = 0;
@@ -520,7 +520,7 @@ int sFltkUIHandler_f_RangeHandler(sXformsNode *head,struct sCbData **CallBackDat
 }
 
 int sFltkUIHandler_f_RadioButtonList(sXformsNode *head,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func){
-  WriteLog("\n[%s]",__func__);
+  WriteLog(stdout,"\n[%s]",__func__);
 	Fl_Group *parent = Fl_Group::current();
 	head->meta_info = (char *)"1"; 
 	static int radioctr = 0;
@@ -573,7 +573,7 @@ int sFltkUIHandler_f_RadioButtonList(sXformsNode *head,struct sCbData **CallBack
 
 
 int sFltkUIHandler_f_CheckBoxList(sXformsNode *head,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func){
-  WriteLog("\n[%s]",__func__);
+  WriteLog(stdout,"\n[%s]",__func__);
 	Fl_Group *parent = Fl_Group::current();
 	head->meta_info = (char *)"1"; 
 	static int chkctr = 0;
@@ -616,7 +616,7 @@ int sFltkUIHandler_f_CheckBoxList(sXformsNode *head,struct sCbData **CallBackDat
 
 
 int sFltkUIHandler_f_ButtonHandler(sXformsNode *head,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func){
-  WriteLog("\n[%s]",__func__);
+  WriteLog(stdout,"\n[%s]",__func__);
 	Fl_Group *parent = Fl_Group::current();
 	head->meta_info = (char *)"1"; 
 	static int btnctr = 0;
@@ -664,7 +664,7 @@ int sFltkUIHandler_f_ButtonHandler(sXformsNode *head,struct sCbData **CallBackDa
 }
 
 int sFltkUIHandler_f_LabelHandler(sXformsNode *head,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func){
-  WriteLog("\n[%s]",__func__);
+  WriteLog(stdout,"\n[%s]",__func__);
 	Fl_Group *parent = Fl_Group::current();
 	head -> meta_info = (char *)"1";
 	static int labelctr = 0;
