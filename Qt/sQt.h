@@ -1,16 +1,16 @@
-#ifndef SIMPLE_UI_KDE_H
-#define SIMPLE_UI_KDE_H
-#include "sKdeCallbacks/sKde_Cb.h"
+#ifndef SIMPLE_UI_QT_H
+#define SIMPLE_UI_QT_H
+#include "sQtCallbacks/sQt_Cb.h"
 #include <QWidget>
 #include <QPushButton>
 #include "../sCallbackData/sCallbackData.h"
 
-class SimpleUiKde : public QWidget
+class SimpleUiQt : public QWidget
 {
     Q_OBJECT
     
 public:
-    SimpleUiKde(struct sCbData *temp,QWidget *parent = 0);
+    SimpleUiQt(struct sCbData *temp,QWidget *parent = 0);
     
 private slots:
     void on_DoneButton_click();

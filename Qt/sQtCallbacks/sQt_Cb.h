@@ -1,5 +1,5 @@
-#ifndef SIMPLE_UI_KDE_CB_H
-#define SIMPLE_UI_KDE_CB_H
+#ifndef SIMPLE_UI_QT_CB_H
+#define SIMPLE_UI_QT_CB_H
 
 struct qt_cb_data{
     char *ref;

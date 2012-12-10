@@ -4,16 +4,16 @@
 
 TEMPLATE = app
 TARGET = 
-DEPENDPATH += . sKdeCallbacks sKdeRenderers
-INCLUDEPATH += . sKdeCallbacks sKdeRenderers
+DEPENDPATH += . sQtCallbacks sQtRenderers
+INCLUDEPATH += . sQtCallbacks sQtRenderers
 
 LIBS += -lxml2
 
 # Input
 CONFIG += uitools qt warn_on debug
-HEADERS += sKDE.h \
-           sKdeCallbacks/sKde_Cb.h \
-           sKdeRenderers/sKdeRenderer.h \
+HEADERS += sQt.h \
+           sQtCallbacks/sQt_Cb.h \
+           sQtRenderers/sQtRenderer.h \
            ../sCallbackData/sCallbackData.h \
            ../misc/misc.h \
            ../simpleUI.h \
@@ -21,10 +21,10 @@ HEADERS += sKDE.h \
            ../xml/sXml.h \
  	   ../io/io.h
 SOURCES += main.cpp \
-           sKDE.cpp \
-           sKdeCallbacks/sKde_Cb.cpp \
-           sKdeRenderers/sKdeParseTree.cpp \
-           sKdeRenderers/sKdeRenderer_Helper.cpp \
+           sQt.cpp \
+           sQtCallbacks/sQt_Cb.cpp \
+           sQtRenderers/sQtParseTree.cpp \
+           sQtRenderers/sQtRenderer_Helper.cpp \
            ../sXforms.c \
            ../sCallbackData/sCallbackData.c \
            ../misc/string_func.c \

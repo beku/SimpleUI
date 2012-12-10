@@ -13,19 +13,19 @@
 #include <string.h>
 #include <QString>
 #include <QLabel>
- #include "sKDE.h"
- #include "sKdeCallbacks/sKde_Cb.h"
- #include "sKdeRenderers/sKdeRenderer.h"
+ #include "sQt.h"
+ #include "sQtCallbacks/sQt_Cb.h"
+ #include "sQtRenderers/sQtRenderer.h"
  #include <QPushButton>
  #include <QTextStream>
  #include <QApplication>
  #include <QAbstractButton>
  #include "../sCallbackData/sCallbackData.h"
-  SimpleUiKde::SimpleUiKde(struct sCbData  *temp, QWidget *parent)
+  SimpleUiQt::SimpleUiQt(struct sCbData  *temp, QWidget *parent)
      : QWidget(parent)
  {
      QUiLoader loader;
-     QFile file("sKde.ui");
+     QFile file("sQt.ui");
      file.open(QFile::ReadOnly);
      QWidget *formWidget = loader.load(&file, this);
      file.close();
@@ -35,7 +35,7 @@
      //printf("\n cp-1");
      // find widgets here 
      DisableDefaultAndConnectSignals();
-     QPushButton *btn = qFindChild<QPushButton *>(this, sKDE_CLOSE_BUTTON);
+     QPushButton *btn = qFindChild<QPushButton *>(this, sQT_CLOSE_BUTTON);
      if(btn)
      {
        btn->setAutoDefault(false);
@@ -45,7 +45,7 @@
     //printf("\n cp-2");
  }
  
- void SimpleUiKde::on_DoneButton_click()
+ void SimpleUiQt::on_DoneButton_click()
  {
      QTextStream cout(stdout);
      cout << "QUITING ..." << "\n";
@@ -53,7 +53,7 @@
     qApp->quit();
  }
  
-void SimpleUiKde::DisableDefaultAndConnectSignals()
+void SimpleUiQt::DisableDefaultAndConnectSignals()
  {
     struct sCbData  *temp = cb_data;
     //print_user_data(temp);
@@ -112,7 +112,7 @@ void SimpleUiKde::DisableDefaultAndConnectSignals()
  }
 
  
- void SimpleUiKde::on_QPushButton_click()
+ void SimpleUiQt::on_QPushButton_click()
  {
     QPushButton *btn = qobject_cast<QPushButton *>(QObject::sender());
     if( btn != NULL)
@@ -139,13 +139,13 @@ void SimpleUiKde::DisableDefaultAndConnectSignals()
    UpdateUI();
  }
  
- void SimpleUiKde::on_QComboBox_current_index_change(int index)
+ void SimpleUiQt::on_QComboBox_current_index_change(int index)
  {
     printf("\n == %d == \n",index);
     UpdateUI();
  }
  
-void SimpleUiKde::on_QComboBox_current_index_change(const QString & text)
+void SimpleUiQt::on_QComboBox_current_index_change(const QString & text)
  {
   QComboBox *combobox = qobject_cast<QComboBox *>(QObject::sender());
     QTextStream cout(stdout);
@@ -168,7 +168,7 @@ void SimpleUiKde::on_QComboBox_current_index_change(const QString & text)
     UpdateUI();
  }
  
- void SimpleUiKde::on_QRadioButton_toggled(bool value)
+ void SimpleUiQt::on_QRadioButton_toggled(bool value)
  {
     QRadioButton *btn = qobject_cast<QRadioButton *>(QObject::sender());
     char *val;
@@ -203,7 +203,7 @@ void SimpleUiKde::on_QComboBox_current_index_change(const QString & text)
     UpdateUI();
  }
  
- void SimpleUiKde::on_QCheckBox_toggled(bool value)
+ void SimpleUiQt::on_QCheckBox_toggled(bool value)
  {
     QCheckBox *btn = qobject_cast<QCheckBox *>(QObject::sender());
     if( btn != NULL)
@@ -236,7 +236,7 @@ void SimpleUiKde::on_QComboBox_current_index_change(const QString & text)
     UpdateUI();
  }
  
- void SimpleUiKde::on_QSlider_valueChanged(int newval)
+ void SimpleUiQt::on_QSlider_valueChanged(int newval)
  {
     QSlider *slider = qobject_cast<QSlider *>(QObject::sender());
     char buf[5];
@@ -261,7 +261,7 @@ void SimpleUiKde::on_QComboBox_current_index_change(const QString & text)
     UpdateUI();
  }
  
- void SimpleUiKde::FindReferencesAndUpdateData(char *name)
+ void SimpleUiQt::FindReferencesAndUpdateData(char *name)
  {
         struct sCbData  *temp = cb_data;
         while( temp )
@@ -330,7 +330,7 @@ void SimpleUiKde::on_QComboBox_current_index_change(const QString & text)
  }
  
  
- void SimpleUiKde::UpdateUI()
+ void SimpleUiQt::UpdateUI()
 {
     struct sCbData *temp, *temp2;
     for( temp = cb_data ; temp ; temp =temp->next )
@@ -352,7 +352,7 @@ void SimpleUiKde::on_QComboBox_current_index_change(const QString & text)
     }
 }
 
-void SimpleUiKde::UpdateWidgetValue(char *type,char*value,char *name)
+void SimpleUiQt::UpdateWidgetValue(char *type,char*value,char *name)
 {
   //QString val = new QString(value);
   QTextStream cout(stdout);

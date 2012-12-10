@@ -12,13 +12,13 @@ libSimpleUICore.a:	io/io.o misc/string_func.o xml/sParseXforms.o sCallbackData/s
 	ar cru libSimpleUICore.a io/io.o misc/string_func.o xml/sParseXforms.o sCallbackData/sCallbackData.o sXforms.o
 
 SimpleUIQt:
-	(cd kde; qmake; make; cp kde ../SimpleUIQt)
+	(cd Qt; qmake; make; cp Qt ../SimpleUIQt)
 
-SimpleUIFltk: libSimpleUICore.a fltk/sFltk.cxx fltk/sFltkWidgets.cxx fltk/sFltkCallbacks.cxx $(HEADER)
-	$(CXX)  $(CFLAGS) -o 'SimpleUIFltk' fltk/sFltk.cxx fltk/sFltkWidgets.cxx fltk/sFltkCallbacks.cxx libSimpleUICore.a $(XML_FLAGS) $(FLTK_FLAGS_) -lfltk
+SimpleUIFltk: libSimpleUICore.a FLTK/sFltk.cxx FLTK/sFltkWidgets.cxx FLTK/sFltkCallbacks.cxx $(HEADER)
+	$(CXX)  $(CFLAGS) -o 'SimpleUIFltk' FLTK/sFltk.cxx FLTK/sFltkWidgets.cxx FLTK/sFltkCallbacks.cxx libSimpleUICore.a $(XML_FLAGS) $(FLTK_FLAGS_) -lfltk
 
-SimpleUIGtk: libSimpleUICore.a gtk/sGtk.c gtk/sGtkRenderers/sGtkParseTree.c gtk/sGtkRenderers/sGtkRenderer_Helper.c gtk/sGtkCallbacks/sGtkCallbacks.c ./gtk/sGtkCallbacks/sGtkCallback_SetValues.c ./gtk/sGtkCallbacks/sGtkCallback_GetValues.c
-	$(CC)  $(CFLAGS) -o 'SimpleUIGtk' gtk/sGtk.c gtk/sGtkRenderers/sGtkParseTree.c gtk/sGtkRenderers/sGtkRenderer_Helper.c gtk/sGtkCallbacks/sGtkCallbacks.c ./gtk/sGtkCallbacks/sGtkCallback_SetValues.c ./gtk/sGtkCallbacks/sGtkCallback_GetValues.c libSimpleUICore.a $(XML_FLAGS) $(GTK_FLAGS)
+SimpleUIGtk: libSimpleUICore.a Gtk/sGtk.c Gtk/sGtkRenderers/sGtkParseTree.c Gtk/sGtkRenderers/sGtkRenderer_Helper.c Gtk/sGtkCallbacks/sGtkCallbacks.c ./Gtk/sGtkCallbacks/sGtkCallback_SetValues.c ./Gtk/sGtkCallbacks/sGtkCallback_GetValues.c
+	$(CC)  $(CFLAGS) -o 'SimpleUIGtk' Gtk/sGtk.c Gtk/sGtkRenderers/sGtkParseTree.c Gtk/sGtkRenderers/sGtkRenderer_Helper.c Gtk/sGtkCallbacks/sGtkCallbacks.c ./Gtk/sGtkCallbacks/sGtkCallback_SetValues.c ./Gtk/sGtkCallbacks/sGtkCallback_GetValues.c libSimpleUICore.a $(XML_FLAGS) $(GTK_FLAGS)
 
 # Build commands and filename extensions...
 .SUFFIXES:	.c
@@ -28,7 +28,7 @@ SimpleUIGtk: libSimpleUICore.a gtk/sGtk.c gtk/sGtkRenderers/sGtkParseTree.c gtk/
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	-(cd kde/; make distclean)
+	-(cd Qt/; make distclean)
 	-rm *.o $(TARGETS)
 	-rm io/*.o
 	-rm misc/*.o
