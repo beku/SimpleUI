@@ -14,14 +14,20 @@ CONFIG += uitools
 HEADERS += sKDE.h \
            sKdeCallbacks/sKde_Cb.h \
            sKdeRenderers/sKdeRenderer.h \
+           ../sCallbackData/sCallbackData.h \
            ../misc/misc.h \
            ../simpleUI.h \
            ../sXforms.h \
-	   ../io/io.h
+           ../xml/sXml.h \
+ 	   ../io/io.h
 SOURCES += main.cpp \
            sKDE.cpp \
            sKdeCallbacks/sKde_Cb.cpp \
            sKdeRenderers/sKdeParseTree.cpp \
            sKdeRenderers/sKdeRenderer_Helper.cpp \
+           ../sXforms.c \
+           ../sCallbackData/sCallbackData.c \
+           ../misc/string_func.c \
+           ../xml/sParseXforms.c \
 	   ../io/io.c
 
