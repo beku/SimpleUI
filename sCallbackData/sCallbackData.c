@@ -175,7 +175,6 @@ int UpdateModel(struct sCbData * head)
   xmlDoc *modelDocPtr = head->doc;
   struct sCbData * temp ;
   struct sCbData * temp2;
-  //TODO Error checking
   // Namespace issue's
   xmlNodeSetPtr nodes;
    xpathcontext = xmlXPathNewContext(modelDocPtr);
@@ -200,8 +199,8 @@ int UpdateModel(struct sCbData * head)
         {
           nodes = xpathobject->nodesetval;
           //printf("\n[1][ %s ] number of nodes inside here is %d",temp->name, nodes->nodeNr);
-          if(temp->value !=  0 )
-	  xmlNodeSetContent(nodes->nodeTab[0],(xmlChar *) temp->value);
+          if(nodes && nodes->nodeTab && nodes->nodeTab[0] && temp && temp->value !=  0 )
+            xmlNodeSetContent(nodes->nodeTab[0],(xmlChar *) temp->value);
         }
       }
       if( temp->nextref )
@@ -218,7 +217,7 @@ int UpdateModel(struct sCbData * head)
             {
               nodes = xpathobject->nodesetval;
               //printf("\n[2][ %s ] number of nodes inside here is %d",temp2->name, nodes->nodeNr);
-              if(temp->value !=  0 )
+              if(nodes && nodes->nodeTab && nodes->nodeTab[0] && temp && temp->value !=  0 )
 	      xmlNodeSetContent(nodes->nodeTab[0],(xmlChar *) temp2->value);
             }
         }
@@ -235,7 +234,6 @@ int UpdateRefsFromModel(struct sCbData * head)
   xmlDoc *modelDocPtr = head->doc;
   struct sCbData * temp;
   struct sCbData * temp2;
-  //TODO Error checking
   // Namespace issue's
   xmlNodeSetPtr nodes;
    xpathcontext = xmlXPathNewContext(modelDocPtr);
@@ -259,7 +257,8 @@ int UpdateRefsFromModel(struct sCbData * head)
         {
           nodes = xpathobject->nodesetval;
           //printf("\n[1][ %s ] number of nodes inside here is %d",temp->name, nodes->nodeNr);
-          temp->value = (char *)xmlNodeGetContent(nodes->nodeTab[0]);//TODO
+          if(nodes && nodes->nodeTab && nodes->nodeTab[0])
+          temp->value = (char *)xmlNodeGetContent(nodes->nodeTab[0]);
           //printf("\n[2] [ %s ] = [ %s ]",temp->ref,temp->value);
         }
       }
@@ -277,7 +276,8 @@ int UpdateRefsFromModel(struct sCbData * head)
             {
               nodes = xpathobject->nodesetval;
               //printf("\n[2][ %s ] number of nodes inside here is %d",temp2->name, nodes->nodeNr);
-              temp2->value = (char *)xmlNodeGetContent(nodes->nodeTab[0]);//TODO
+              if(nodes && nodes->nodeTab && nodes->nodeTab[0])
+              temp2->value = (char *)xmlNodeGetContent(nodes->nodeTab[0]);
               //printf("\n[2] [ %s ] = [ %s ]",temp2->ref,temp2->value);
             }
         }
