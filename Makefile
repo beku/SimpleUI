@@ -19,7 +19,7 @@ SimpleUIGtk: libSimpleUICore.a
 	$(CC)  $(CFLAGS) -o 'SimpleUIGtk' gtk/sGtk.c gtk/sGtkRenderers/sGtkParseTree.c gtk/sGtkRenderers/sGtkRenderer_Helper.c gtk/sGtkCallbacks/sGtkCallbacks.c ./gtk/sGtkCallbacks/sGtkCallback_SetValues.c ./gtk/sGtkCallbacks/sGtkCallback_GetValues.c libSimpleUICore.a $(XML_FLAGS) $(GTK_FLAGS)
 
 # Build commands and filename extensions...
-.SUFFIXES:	.c .cxx
+.SUFFIXES:	.c
 
 .c.o:
 	echo Compiling $< ...
