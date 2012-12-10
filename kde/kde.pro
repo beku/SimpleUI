@@ -7,6 +7,8 @@ TARGET =
 DEPENDPATH += . sKdeCallbacks sKdeRenderers
 INCLUDEPATH += . sKdeCallbacks sKdeRenderers
 
+LIBS += -lxml2
+
 # Input
 CONFIG += uitools
 HEADERS += sKDE.h \
@@ -14,10 +16,12 @@ HEADERS += sKDE.h \
            sKdeRenderers/sKdeRenderer.h \
            ../misc/misc.h \
            ../simpleUI.h \
-           ../sXforms.h
+           ../sXforms.h \
+	   ../io/io.h
 SOURCES += main.cpp \
            sKDE.cpp \
            sKdeCallbacks/sKde_Cb.cpp \
            sKdeRenderers/sKdeParseTree.cpp \
-           sKdeRenderers/sKdeRenderer_Helper.cpp
+           sKdeRenderers/sKdeRenderer_Helper.cpp \
+	   ../io/io.c
 
