@@ -10,7 +10,7 @@ INCLUDEPATH += . sKdeCallbacks sKdeRenderers
 LIBS += -lxml2
 
 # Input
-CONFIG += uitools
+CONFIG += uitools qt warn_on debug
 HEADERS += sKDE.h \
            sKdeCallbacks/sKde_Cb.h \
            sKdeRenderers/sKdeRenderer.h \
