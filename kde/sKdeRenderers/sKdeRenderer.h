@@ -45,19 +45,19 @@ int kde_f_RangeHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 
     
     // functions defined in sKdeRenderer_Helper.c
-xmlNode *Create1ObjectNode(xmlNode *par,char *nodename, char *value);
+xmlNode *Create1ObjectNode(xmlNode *par, const char *nodename, const char *value);
 xmlNode *CreateNodeText(xmlNode* par,char *val);
-xmlAttr * CreateNodeAttribute(xmlNode *node, char *attrName, char *attrValue);
-xmlNode *Create1WidgetNode(xmlNode *par,char *name, char *classname,char **prop_name, char **prop_type, char **value, int num_prop);
-xmlNode *Create1PropertyNode(xmlNode *par,char *prop_name,char *prop_type, char *value);
+xmlAttr * CreateNodeAttribute(xmlNode *node, const char *attrName, const char *attrValue);
+xmlNode *Create1WidgetNode(xmlNode *par, const char *name, const char *classname, char **prop_name, char **prop_type, char **value, int num_prop);
+xmlNode *Create1PropertyNode(xmlNode *par, const char *prop_name, const char *prop_type, const char *value);
 void CreatePropertyNodes(xmlNode *par,char **prop_name, char **prop_type, char **value, int num_prop);
-xmlNode *Create1GeometryProp(xmlNode *par,char *x, char *y, char *width, char *height);
-xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par,char *name, char *classname,char *propname, char *strval);
-xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval );
-xmlNode *CreateLayout(xmlNode *par,char *classname, char *name );
-xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *width, char *height );
-xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, char * row, char * column);
-xmlNode * CreateXmlNode(xmlNsPtr ns, char * name);
-xmlNode *CreateStringAttribute(xmlNode *par, char *strval );
+xmlNode *Create1GeometryProp(xmlNode *par, const char *x, char const *y, const char *width, const char *height);
+xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par, const char *name, const char *classname, const char *propname, const char *strval);
+xmlNode *CreateStringProperty(xmlNode *par, const char *propname, const char *strval );
+xmlNode *CreateLayout(xmlNode *par, const char *classname, const char *name );
+xmlNode *CreateSpacer(xmlNode *par, const char *spacerName, const char *orientation, const char *width, const char *height );
+xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, const char * row, const char * column);
+xmlNode * CreateXmlNode(xmlNsPtr ns, const char * name);
+xmlNode *CreateStringAttribute(xmlNode *par, const char *strval );
 #endif
 

@@ -5,7 +5,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-char * s_dupstr(char *src);
+char * s_dupstr(const char *src);
 //char * sAppendString( char *src, char *text);
 char * itoa(int number);
 

@@ -3,7 +3,7 @@
 #include<string.h>
 
 
-//#define ENABLE_LOG
+#define ENABLE_LOG
 #ifdef ENABLE_LOG
 #define WriteLog printf
 #else
@@ -142,11 +142,11 @@ void sPrintsXformsNode(sXformsNode * node)
 		//WriteLog("\n next = ",node->next->type,node->next->name);
 		//WriteLog("\n child = ",node->child->type,node->child->name);
 		//WriteLog("\n par = ",node->par->type,node->par->name);
-		WriteLog("\n number of children = ",node->num_child);
-		WriteLog("\n meta info = ",node->meta_info); 
-		WriteLog("\n private data = ",node->private_data);
-		WriteLog("\n ref value data = ",node->refValue);//WriteLog("\n private data = ",node->private_data);
-		WriteLog("\n------------------------------------------------------\n");		
+		WriteLog(" number of children = %d\n",node->num_child);
+		WriteLog(" meta info = %s\n",node->meta_info); 
+		WriteLog(" private data = %s\n",node->private_data);
+		WriteLog(" ref value data = %d\n",node->refValue);//WriteLog("\n private data = ",node->private_data);
+		WriteLog("------------------------------------------------------\n");		
 	}
 }
 

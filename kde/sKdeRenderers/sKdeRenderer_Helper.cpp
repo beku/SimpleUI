@@ -3,7 +3,7 @@
 #include <libxml/tree.h>
 #include "sKdeRenderer.h"
 
-xmlNode *Create1GeometryProp(xmlNode *par,char *x, char *y, char *width, char *height)
+xmlNode *Create1GeometryProp(xmlNode *par, const char *x, const char *y, const char *width, const char *height)
 {
   xmlNode *propnode = NULL;
   propnode = CreateXmlNode(NULL,"property");
@@ -19,16 +19,16 @@ xmlNode *Create1GeometryProp(xmlNode *par,char *x, char *y, char *width, char *h
   xmlAddChild(par,propnode);
   return propnode;
 }
-void CreatePropertyNodes(xmlNode *par,char **prop_name, char **prop_type, char **value, int num_prop)
+void CreatePropertyNodes(xmlNode *par, char **prop_name, char **prop_type, char **value, int num_prop)
 {
     int i = 0;
     for( i = 0 ; i < num_prop ; i++)
     {
-    	Create1PropertyNode(par,prop_name[i],prop_type[i],value[i]);
+    	Create1PropertyNode( par, prop_name[i], prop_type[i], value[i] );
     }
 }
 
-xmlNode *Create1PropertyNode(xmlNode *par,char *prop_name,char *prop_type, char *value)
+xmlNode *Create1PropertyNode(xmlNode *par, const char *prop_name, const char *prop_type, const char *value)
 {
     xmlNode *new_node = NULL;
     new_node = CreateXmlNode(NULL,"property");
@@ -48,7 +48,7 @@ xmlNode *Create1PropertyNode(xmlNode *par,char *prop_name,char *prop_type, char 
     return new_node;
 }
 
-xmlNode *Create1WidgetNode(xmlNode *par,char *name, char *classname,char **prop_name, char **prop_type, char **value, int num_prop)
+xmlNode *Create1WidgetNode(xmlNode *par, const char *name, const char *classname, char **prop_name, char **prop_type, char **value, int num_prop)
 {
     xmlNode *new_node = NULL;
     int i = 0;
@@ -65,7 +65,7 @@ xmlNode *Create1WidgetNode(xmlNode *par,char *name, char *classname,char **prop_
     return new_node;
 }
 
-xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par,char *name, char *classname,char *propname, char *strval)
+xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par, const char *name, const char *classname, const char *propname, const char *strval)
 {
     xmlNode *new_node = NULL;
     new_node = CreateXmlNode(NULL,"widget");
@@ -79,14 +79,14 @@ xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par,char *name, char *classnam
     return new_node;
 }
 
-xmlAttr * CreateNodeAttribute(xmlNode *node, char *attrName, char *attrValue)
+xmlAttr * CreateNodeAttribute(xmlNode *node, const char *attrName, const char *attrValue)
 {
     xmlAttr *attr = NULL;
     attr = xmlNewProp(node,BAD_CAST attrName,BAD_CAST attrValue);
     return attr;
 }
 
-xmlNode *CreateNodeText(xmlNode* par,char *val)
+xmlNode *CreateNodeText(xmlNode* par, const char *val)
 {
     xmlNode *textnode = NULL;
     textnode = xmlNewText(BAD_CAST val);
@@ -94,7 +94,7 @@ xmlNode *CreateNodeText(xmlNode* par,char *val)
     return textnode;
 }
 
-xmlNode *Create1ObjectNode(xmlNode *par,char *nodename, char *value)
+xmlNode *Create1ObjectNode(xmlNode *par, const char *nodename, const char *value)
 {
     xmlNode *new_node = NULL;
     new_node = CreateXmlNode(NULL,nodename);
@@ -106,7 +106,7 @@ xmlNode *Create1ObjectNode(xmlNode *par,char *nodename, char *value)
     return new_node;
 }
 
-xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval )
+xmlNode *CreateStringProperty(xmlNode *par, const char *propname, const char *strval )
 {
   xmlNode *new_node = NULL;
   new_node = CreateXmlNode(NULL,"property");
@@ -118,7 +118,7 @@ xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval )
   xmlAddChild(par,new_node);
 }
 
-xmlNode *CreateLayout(xmlNode *par,char *classname, char *name )
+xmlNode *CreateLayout(xmlNode *par, const char *classname, const char *name )
 {
   xmlNode *layoutNode = Create1ObjectNode(par,"layout",0);
   CreateNodeAttribute(layoutNode,"class",classname); 
@@ -126,7 +126,7 @@ xmlNode *CreateLayout(xmlNode *par,char *classname, char *name )
   return layoutNode;
 }
 
-xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *width, char *height )
+xmlNode *CreateSpacer(xmlNode *par, const char *spacerName, const char *orientation, const char *width, const char *height )
 {
   xmlNode *itemNode = CreateXmlNode(NULL,"item");
   xmlNode *spacerNode = CreateXmlNode(NULL,"spacer");
@@ -148,7 +148,7 @@ xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *wi
   return itemNode;
 }
 
-xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, char * row, char * column)
+xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, const char * row, const char * column)
 {
   xmlNode *itemNode = CreateXmlNode(NULL,"item");
   if( row != 0 && column != 0)
@@ -166,12 +166,12 @@ xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, char * row, char * column)
   }
 }
 
-xmlNode * CreateXmlNode(xmlNsPtr ns, char * name)
+xmlNode * CreateXmlNode(xmlNsPtr ns, const char * name)
 {
     return xmlNewNode(ns,BAD_CAST name);
 }
 
-xmlNode *CreateStringAttribute(xmlNode *par, char *strval )
+xmlNode *CreateStringAttribute(xmlNode *par, const char *strval )
 {
   xmlNode *new_node = NULL;
   new_node = CreateXmlNode(NULL,"attribute");
