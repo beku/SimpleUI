@@ -1,6 +1,10 @@
 #ifndef _S_CALLBACK_DATA_H_
 #define _S_CALLBACK_DATA_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #include "../misc/misc.h"
 #include <malloc.h>
 #include <libxml/parser.h>
@@ -34,4 +38,9 @@ int UpdateModel(struct sCbData * head);
 void UpdateCallbackData(char *ref, char *data, struct sCbData *list);
 void UpdateModelandCallUserFunction(char *ref, char *data,struct sCbData *list );
 int UpdateRefsFromModel(struct sCbData * head);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
 #endif

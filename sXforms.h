@@ -2,6 +2,10 @@
 #define SIMPLE_UI_XFORMS_H
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 
 struct sXformsNodeAttributeValue
 {
@@ -46,4 +50,9 @@ sXformsNode * SearchSubTreeForNodes(sXformsNode *head,char *type, sXformsNodeAtt
 void MarkChildElementsAsVisited(sXformsNode *node);
 sXformsNodeAttr *getAttrFromList (sXformsNode *node,char *name);
 void * getAttrValueFromList(sXformsNode *node,char *name);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
 #endif

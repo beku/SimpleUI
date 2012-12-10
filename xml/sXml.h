@@ -5,6 +5,10 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 
 sXformsNode * ParseXformsToTree(const char * xforms, xmlDoc **modelDocPtr);
 sXformsNodeAttr * MakeAttributesList(xmlNodePtr cur, xmlDocPtr ptr);
@@ -24,4 +28,9 @@ xmlNodeSetPtr sGetXpathValue(char *reference, xmlDocPtr doc);
 xmlXPathContextPtr sGetXpathEvalContext(xmlDocPtr doc);
 char * EvalNodeSetPtrForInstannce(xmlNodeSetPtr nodeset);
 //xmlXPathObjectPtr  sGetXpathObjectPtr(char *reference, xmlDocPtr doc);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
 #endif
