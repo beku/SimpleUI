@@ -1,3 +1,12 @@
+/** SimpleUI
+ *
+ *  @par Copyright:
+ *            2012 (c) Nitin Chadha <upcomingnewton@gmail.com>
+ *
+ *  @author   Nitin Chadha <upcomingnewton@gmail.com>
+ *  @par License:
+ *            BSD-2-Clause <http://www.opensource.org/licenses/BSD-2-Clause>
+ */
 #include <QtUiTools/QUiLoader>
 #include <QtUiTools/QtUiTools>
  #include <QtGui>
@@ -27,8 +36,12 @@
      // find widgets here 
      DisableDefaultAndConnectSignals();
      QPushButton *btn = qFindChild<QPushButton *>(this, sKDE_CLOSE_BUTTON);
-     btn->setAutoDefault(false);
-     connect(btn, SIGNAL(clicked()), this, SLOT(on_DoneButton_click()));
+     if(btn)
+     {
+       btn->setAutoDefault(false);
+       connect(btn, SIGNAL(clicked()), this, SLOT(on_DoneButton_click()));
+     } else
+       printf("%s:%d Button not found\n",__FILE__,__LINE__);
     //printf("\n cp-2");
  }
  
