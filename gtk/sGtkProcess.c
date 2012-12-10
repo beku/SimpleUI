@@ -24,7 +24,7 @@ gcc -o sgtk -g -Wall gtk/sGtkProcess.c gtk/sGtk.h gtk/sGtkRenderers/sGtkParseTre
 #if defined(LIBXML_TREE_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 int process(char *input_xml_file, char *output_xml_file,CallBackInterfaceFunction cb)
 {
-	fprintf(stdout,"\n===== SIMPLE UI TOOLKIT =====\n\n");
+	fprintf(stdout,"===== SIMPLE UI TOOLKIT =====\n\n\n");
 	 const char *wrong_arg = 0;
 	 char *xforms_text = 0;
 	 sXformsNode *head;
@@ -50,11 +50,11 @@ int process(char *input_xml_file, char *output_xml_file,CallBackInterfaceFunctio
   builder = gtk_builder_new();
   if(  cb == 0)
   {
-    CallBackData = sGenerateGladeFile(head,modelDocPtr,&DummyIfFunction);
+    CallBackData = sGenerateGladeString(head,modelDocPtr,&DummyIfFunction);
   }
   else
   {
-    CallBackData = sGenerateGladeFile(head,modelDocPtr,cb);
+    CallBackData = sGenerateGladeString(head,modelDocPtr,cb);
   }
   if( ! gtk_builder_add_from_file( builder, sGTK_UI_FILE, &error ) )
     {

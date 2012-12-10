@@ -5,12 +5,13 @@
 #include "../../simpleUI.h"
 #include "../../sXforms.h"
 #include "../../misc/misc.h"
+#include "../../xml/sXml.h"
 #include "../sGtkCallbacks/sGtkCallbacks.h"
 #include "../../sCallbackData/sCallbackData.h"
 
-//#define EnableLog
+#define EnableLog
 #ifdef EnableLog
-#define WriteLog fWriteLog
+#define WriteLog fprintf
 #else
 #define WriteLog
 #endif
@@ -130,11 +131,10 @@ struct sGtkUIHandlers_data gtk_handlers[] = {
 	}
 };
 
-struct sCbData * sGenerateGladeFile(sXformsNode *head,xmlDoc *modelPtr,CallBackInterfaceFunction func )
+struct sCbData * sGenerateGladeString( sXformsNode *head,xmlDoc *modelPtr,CallBackInterfaceFunction func, char ** result )
 {
     xmlDoc *doc = NULL;
     xmlNode *root_node = NULL;
-    xmlNode *current_node = NULL;
     /* required for every window */
     doc = xmlNewDoc(BAD_CAST"1.0");  // create a new document
     root_node = xmlNewNode(NULL,BAD_CAST"interface");  // root node
@@ -166,8 +166,8 @@ struct sCbData * sGenerateGladeFile(sXformsNode *head,xmlDoc *modelPtr,CallBackI
     CreatePropertyNodes(BottomPaneHBox,BottomPaneHBox_propnames,BottomPaneHBox_NullNodes,BottomPaneHBox_NullNodes,BottomPaneHBox_NullNodes,BottomPaneHBox_values,4);
     
     // add 3 children
-    xmlNode *BottomPaneHBox_child1 = Create1ChildNodeWithPlaceholder(BottomPaneHBox,NULL,NULL);
-    xmlNode *BottomPaneHBox_child2 = Create1ChildNodeWithPlaceholder(BottomPaneHBox,NULL,NULL);
+    /*xmlNode *BottomPaneHBox_child1 =*/ Create1ChildNodeWithPlaceholder(BottomPaneHBox,NULL,NULL);
+    /*xmlNode *BottomPaneHBox_child2 =*/ Create1ChildNodeWithPlaceholder(BottomPaneHBox,NULL,NULL);
     xmlNode *BottomPaneHBox_child3 = Create1ChildNode(BottomPaneHBox,NULL,NULL);
     
     // add close button to 3rd child
@@ -182,7 +182,7 @@ struct sCbData * sGenerateGladeFile(sXformsNode *head,xmlDoc *modelPtr,CallBackI
     char *BottomPaneHBox_packing_propnames[] = {"expand","fill","position","pack_type"};
     char *BottomPaneHBox_packing_NullNodes[] = {NULL,NULL,NULL,NULL};
     char *BottomPaneHBox_packing_values[] = {"False","True","1","end"};
-    xmlNode *BottomPaneHBox_packing = CreatePackingNodeWithProperties(Main_Vbox_Child2,BottomPaneHBox_packing_propnames,BottomPaneHBox_packing_NullNodes, BottomPaneHBox_packing_NullNodes,BottomPaneHBox_packing_NullNodes,BottomPaneHBox_packing_values, 4);
+    /*xmlNode *BottomPaneHBox_packing =*/ CreatePackingNodeWithProperties(Main_Vbox_Child2,BottomPaneHBox_packing_propnames,BottomPaneHBox_packing_NullNodes, BottomPaneHBox_packing_NullNodes,BottomPaneHBox_packing_NullNodes,BottomPaneHBox_packing_values, 4);
     
     // parse the ds here, make child for main contents
     xmlNode *Main_Vbox_Child1 = Create1ChildNode(Main_Vbox,NULL,NULL);
@@ -199,7 +199,10 @@ struct sCbData * sGenerateGladeFile(sXformsNode *head,xmlDoc *modelPtr,CallBackI
     struct sCbData *temp = (struct sCbData *)0;
     sGtkGenerateUIFromTree(head,AddContentHere,&temp,modelPtr,func);
     // main content area
+#ifdef EnableLog
     xmlSaveFormatFileEnc(sGTK_UI_FILE, doc, "UTF-8", 1); // save file
+#endif
+    xmlDocDumpFormatMemoryEnc( doc, (xmlChar**)result, 0, "UTF-8", 1 );
     xmlFreeDoc(doc);  // free document
     xmlCleanupParser();  //clean parse
     return temp;
@@ -209,7 +212,7 @@ struct sCbData * sGenerateGladeFile(sXformsNode *head,xmlDoc *modelPtr,CallBackI
 int sGtkGenerateUIFromTree(sXformsNode * head, xmlNode *par ,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func )
 {
 if( head == 0 ){
-	fprintf(stderr,"\n no data to read from\n");
+	fprintf(stderr," no data to read from\n\n");
 	exit(1);
 }
 else{
@@ -219,7 +222,7 @@ else{
 		if( temp->meta_info && !strcmp(temp->meta_info,"1")){
 			continue;
 		}
-		WriteLog(stdout,"\n == %s : %s ==",temp->meta_info, temp->name);
+		WriteLog(stdout,"\n == %s : %s ==",temp->meta_info?temp->meta_info:temp->type, temp->name);
 		x = 0;
 		if(temp->attr){
 			while(gtk_handlers[x].type != 0){
@@ -227,7 +230,7 @@ else{
 				sXformsNodeAttr *tempattr;
 				for( tempattr = temp->attr; tempattr; tempattr=tempattr->next){
 					if( (gtk_handlers[x].attrname) && (gtk_handlers[x].attrvalue) && ( !strcmp(tempattr->attrName,gtk_handlers[x].attrname) && !strcmp(tempattr->attrValue,gtk_handlers[x].attrvalue))){
-						WriteLog(stdout,"\n[%s][%d] start specialised %s:%s",__func__,__LINE__,temp->type,temp->name);
+						WriteLog(stdout," [%s][%d] start specialised %s:%s\n",__func__,__LINE__,temp->type,temp->name);
 						gtk_handlers[x].handler(temp,par,CallBackData,modelPtr,func);
 						temp->meta_info = (char *)"1"; // node visited
 						break;
@@ -246,7 +249,7 @@ else{
 			x = 0;
 			while(gtk_handlers[x].type != 0){
 			if( !strcmp(temp->type,gtk_handlers[x].type) && !gtk_handlers[x].strict){
-				//WriteLog(stdout,"\n[%s][%d] start generic %s:%s",__func__,__LINE__,temp->type,temp->name);
+				WriteLog(stdout," [%s][%d] start generic %s:%s\n\n",__func__,__LINE__,temp->type,temp->name);
 				gtk_handlers[x].handler(temp,par,CallBackData,modelPtr,func);
 				temp->meta_info = (char *)"1"; // node visited
 				//break;
@@ -266,23 +269,21 @@ return 0;
 
 int gtk_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func )
 {
-  WriteLog(stdout,"\n[%s][%d][head = %s,%s]",__func__,__LINE__,head->type,head->name);
-  static int tabsctr = 0;
+  WriteLog(stdout,"[%s][%d][head = %s,%s]\n",__func__,__LINE__,head->type,head->name);
 	head -> meta_info = (char *)"1";
 	sXformsNodeAttr xf_trigger_attr = {"type","tab_trigger",(char *)0,(char *)0,(sXformsNodeAttr *)0,(sXformsNodeAttr *)0};
-	int flag_t = 1;
 	sXformsNode *xftrigger = SearchSubTreeForNodes(head,(char *)"xf:trigger",&xf_trigger_attr,0,1);
 	if( xftrigger != 0){
 	    xmlNode *curnode = node;
 /*	    // find the parent of this xmlNode child, if it is scrolled window, then add gtkviewport*/
 	    xmlNode *par = node->parent;
         if(par == NULL ){
-            fprintf(stderr,"\n no parent found \n");
+            fprintf(stderr," no parent found \n\n");
             exit(1);
         }
 	    xmlAttr *attr = par->properties;
 	    while(attr && attr->type == XML_ATTRIBUTE_NODE ){
-			if( !strcmp("class",attr->name) && !strcmp("GtkScrolledWindow",xmlNodeListGetString(node->doc,attr->children,1)))
+			if( !strcmp("class",(const char*)attr->name) && !strcmp("GtkScrolledWindow",(const char*)xmlNodeListGetString(node->doc,attr->children,1)))
 			{
                 xmlNode *ViewPort = Create1ObjectNode(node,"viewport_scrolledwindow_ContentArea","GtkViewport",NULL,NULL);
                 char *ViewPort_propnames[] = {"visible","can_focus"};
@@ -305,7 +306,6 @@ int gtk_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
     int i = 0;
 	while( xftrigger != 0){
 		
-		flag_t = 0;
 		// search for xf:toggle inside this
 		sXformsNode * toggle = SearchSubTreeForNodes(xftrigger,(char *)"xf:toggle",(sXformsNodeAttr *)0,0,0);
 		if(toggle != 0){
@@ -370,7 +370,7 @@ int gtk_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
 				}
 			}
 		}else{
-			WriteLog(stdout,"\n[%s][%d]ERROR MAKING TABS",__FILE__,__LINE__);
+			WriteLog(stdout,"[%s][%d]ERROR MAKING TABS\n",__FILE__,__LINE__);
 			exit(1);
 		}
 		xftrigger->meta_info = (char *)"1";
@@ -378,14 +378,14 @@ int gtk_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
 	}}
 	else
 	{
-	    WriteLog(stdout,"\n[%s:%s] COULD NOT PARSE",head->name,head->type);
+	    WriteLog(stdout,"[%s:%s] COULD NOT PARSE\n",head->name,head->type);
 	}
     return 0;
 }
 
 int gtk_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func )
 {
-    WriteLog(stdout,"\n[%s][%d] HEAD = %s:%s \t\t NODE = %s",__func__,__LINE__,head->name, head->type,node->name);
+    WriteLog(stdout,"[%s][%d] HEAD = %s:%s \t\t NODE = %s\n",__func__,__LINE__,head->name, head->type,node->name);
     int i = 0;
     sXformsNode *temp = head;
      head -> meta_info = (char *)"1";
@@ -426,6 +426,7 @@ int gtk_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
                                         frametempvboxPackingNull,
                                         frametempvboxPackingValues,3);
     }
+  return 0;    
 }
 
 
@@ -433,7 +434,7 @@ int gtk_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 int gtk_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func )
 {
     static int selectctr = 0;
-    WriteLog(stdout,"\n[%s][%d][head = %s]",__func__,__LINE__,head->name);
+    WriteLog(stdout,"[%s][%d][head = %s]\n",__func__,__LINE__,head->name);
     int pos = -1;
     // calculate the position of this element among it's siblings'
     head->meta_info = (char *)"1";
@@ -465,7 +466,7 @@ int gtk_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBa
     //Create1SignalNode(combobox,"changed","on_combobox_changed",NULL, "no",NULL,NULL);
     Create1SignalNode(combobox,"changed","CallBackFunction",NULL, "no",NULL,NULL);
     xmlNode *CellRendererChild = Create1ChildNode(combobox,NULL,NULL);
-    xmlNode *CellRenderer = Create1ObjectNode(CellRendererChild,sAppendString("CellRenderer_",int2str[selectctr]),"GtkCellRendererText",NULL,NULL);
+    /*xmlNode *CellRenderer =*/ Create1ObjectNode(CellRendererChild,sAppendString("CellRenderer_",int2str[selectctr]),"GtkCellRendererText",NULL,NULL);
     xmlNode *attr = CreateXmlNodeWithParent(CellRendererChild,"attributes");
     xmlNode *attrchild = CreateXmlNodeWithParent(attr,"attribute");
     CreateNodeText(attrchild,int2str[0]);
@@ -477,6 +478,7 @@ int gtk_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBa
     PackElements(child,"True","False",pos);
     selectctr++;
 
+  return 0;    
 }
 
 int gtk_f_RadioButtonList(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func )
@@ -510,12 +512,13 @@ int gtk_f_RadioButtonList(sXformsNode *head,xmlNode *node,struct sCbData **CallB
     PackElements(buttongroupchild,"True","False",pos);
     PackElements(hbox->parent,"True","False",pos);
     RadioButtonListctr++;
+  return 0;    
 }
 
 int gtk_f_CheckBoxList(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func )
 {
     static int checklistctr = 0;
-    WriteLog(stdout,"\n[%s][%d][head = %s]",__func__,__LINE__,head->private_data);
+    WriteLog(stdout,"[%s][%d][head = %s]\n",__func__,__LINE__,head->private_data);
     head->meta_info = int2str[1];
     xmlNode *vboxchild = Create1ChildNode(node,NULL,NULL);
     xmlNode *vbox = Create1ObjectNode(vboxchild,sAppendString("CheckBoxList_Vbox_",int2str[checklistctr]),"GtkBox",NULL,NULL);
@@ -547,6 +550,7 @@ int gtk_f_CheckBoxList(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     // done button
     PackElements(vboxchild,"True","False",0);
     checklistctr++;
+  return 0;    
 }
 
 int gtk_f_InputHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func )
@@ -605,6 +609,7 @@ int gtk_f_InputHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     PackElements(child_entry,"True","False",1);
     PackElements(child,"True","False",pos);
     inputctr++;
+  return 0;    
 }
 
 /* ============= DONE ============= */
@@ -617,6 +622,7 @@ int gtk_f_LabelHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     int pos  = CalculatePosition(head);
     MakeLabel(head,hbox,CallBackData,modelPtr,func,1);
     PackElements(hbox->parent,"True","False",pos);
+  return 0;    
 }
 
 /* ============= DONE ============= */
@@ -675,6 +681,7 @@ int gtk_f_ButtonHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBac
 
     PackElements(child,"True","False",pos);
     btnctr++;
+  return 0;    
 }
 
 /* ============= DONE ============= */
@@ -684,8 +691,7 @@ int gtk_f_RangeHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     int pos = -1;
     head->meta_info = (char *)"1";
     // calculate the position of this element among it's siblings'
-    sXformsNode *temp = head;
-    WriteLog(stdout,"\n *************** RANGE ***[%s][%d]",__func__,__LINE__);
+    WriteLog(stdout," *************** RANGE ***[%s][%d]\n",__func__,__LINE__);
     
     xmlNode *vboxchild = Create1ChildNode(node,NULL,NULL);
     xmlNode *vbox = Create1ObjectNode(vboxchild,sAppendString("RangeHandler_Vbox_",int2str[scalectr]),"GtkBox",NULL,NULL);
@@ -726,6 +732,7 @@ int gtk_f_RangeHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     PackElements(child,"True","False",2);
     MakeAdjustment(head,node,CallBackData,sAppendString("GtkScale_Adjustment_",int2str[scalectr]));
     scalectr++;
+  return 0;    
 }
 
 /* ============= DONE ============= */
@@ -739,6 +746,7 @@ int gtk_f_MakeRadioButtonGroup(sXformsNode *head,xmlNode *node,struct sCbData **
     char *GtkRadioButtonGroupNull[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     char *GtkRadioButtonGroupTran[] = {"yes",NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     CreatePropertyNodes(GtkRadioButtonGroup,GtkRadioButtonGroupProp,GtkRadioButtonGroupTran,GtkRadioButtonGroupNull,GtkRadioButtonGroupNull,GtkRadioButtonGroupVal,8);
+  return 0;    
 }
 
 /* ============= DONE ============= */
@@ -770,6 +778,7 @@ int gtk_f_MakeListStoreForDropDown(sXformsNode *head,xmlNode *node ,struct sCbDa
                 CreateDataRow(row,int2str[1],"yes",temp->name);
 			}
     }
+  return 0;    
 }
 
 /* ============= DONE ============= */
@@ -783,7 +792,8 @@ int MakeAdjustment(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData
     char *Adjustment_value[] = {"100","1","1"};
     char *Adjustment_null[] = {NULL,NULL,NULL};
     CreatePropertyNodes(Adjustment,Adjustment_prop,Adjustment_null, Adjustment_null, Adjustment_null,Adjustment_value ,3);
-    
+
+  return 0;    
 }
 
 // helpers

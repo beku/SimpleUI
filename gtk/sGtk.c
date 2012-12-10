@@ -1,6 +1,5 @@
 #include <string.h>
 #include "../simpleUI.h"
-#include "../sXforms.h"
 #include "../xml/sXml.h"
 #include "../io/io.h"
 #include "../sXforms.h"
@@ -28,7 +27,7 @@ void usage(int argc, char ** argv)
 #if defined(LIBXML_TREE_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 int main ( int argc , char **argv )
 {
-	fprintf(stdout,"\n===== SIMPLE UI TOOLKIT =====\n\n");
+	fprintf(stdout,"===== SIMPLE UI TOOLKIT =====\n\n\n");
 	 const char *wrong_arg = 0;
 	 char *output_model_file = 0;
 	 char *xforms_text = 0;
@@ -157,13 +156,14 @@ fprintf(stdout,"INPUT FILE = %s\n",input_xml_file);
   //sPrintsXformsTree(head);
   gtk_init( &argc, &argv );
   builder = gtk_builder_new();
-  //cb_data = sGenerateGladeFile(head);
-  CallBackData = sGenerateGladeFile(head,modelDocPtr,&DummyIfFunction);
+  //cb_data = sGenerateGladeString(head);
+  char * xml_data = 0;
+  CallBackData = sGenerateGladeString(head,modelDocPtr,&DummyIfFunction, &xml_data );
   //print_user_data(CallBackData);
-  if( ! gtk_builder_add_from_file( builder, sGTK_UI_FILE, &error ) )
+  if( ! gtk_builder_add_from_string( builder, xml_data, strlen(xml_data), &error ) )
     {
         g_warning( "%s", error->message );
-        g_free( error );
+        g_error_free(error);
         return( 1 );
     }
     
@@ -188,7 +188,7 @@ fprintf(stdout,"INPUT FILE = %s\n",input_xml_file);
 #else
     int main(int argc, char **argv)
     {
-        fprintf(stderr,"\n ERROR. LIB-XML IS NOT PROPERLY COMPILED");
+        fprintf(stderr," ERROR. LIB-XML IS NOT PROPERLY COMPILED\n");
         exit(1);
     }
 #endif
