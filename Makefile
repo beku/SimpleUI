@@ -133,7 +133,7 @@ first: all
 
 all: Makefile $(TARGET)
 
-$(TARGET): ui_sKde.h ui_glade2.h $(OBJECTS)  
+$(TARGET): ui_sKde.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: SimpleUI.pro  /usr/share/qt4/mkspecs/default/qmake.conf /usr/share/qt4/mkspecs/common/g++.conf \
