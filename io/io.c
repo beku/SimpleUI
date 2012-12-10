@@ -1,9 +1,17 @@
+/** SimpleUI
+ *
+ *  @par Copyright:
+ *            2012 (c) Nitin Chadha <upcomingnewton@gmail.com>
+ *
+ *  @author   Nitin Chadha <upcomingnewton@gmail.com>
+ *  @par License:
+ *            BSD-2-Clause <http://www.opensource.org/licenses/BSD-2-Clause>
+ */
 #include "io.h"
 
 #include<string.h>
 #include<stdio.h>
 #include<malloc.h>
-#include "../simpleUI.h"
 
 
 char * sReadFileToMem(const char *filename)
@@ -14,15 +22,13 @@ char * sReadFileToMem(const char *filename)
 	if((fp = fopen(filename,"r")) != 0)
 	{
 		      /* get size */
-		      //fprintf(stdout,"\nfp = %u",fp);
 		      fseek(fp,0L,SEEK_END);
 		      /* read file possibly partitial */
 		      size = ftell (fp);
-		      //fprintf(stdout,"\nsize of file is %ld",size);
 		      rewind(fp);
 
 		      /* allocate memory */
-		      filetext = (char *)malloc(sizeof(char)*((size -1)));
+		      filetext = (char *)calloc(sizeof(char),size + 1);
 
 		      /* check and read */
 		      if ((fp != 0)
