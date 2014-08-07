@@ -22,7 +22,7 @@ char * sReadFileToMem(const char *filename)
 		      rewind(fp);
 
 		      /* allocate memory */
-		      filetext = (char *)malloc(sizeof(char)*((size -1)));
+		      filetext = (char *)malloc(sizeof(char)*((size + 1)));
 
 		      /* check and read */
 		      if ((fp != 0)
