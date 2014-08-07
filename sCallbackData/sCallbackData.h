@@ -1,5 +1,9 @@
 #ifndef _S_CALLBACK_DATA_H_
 #define _S_CALLBACK_DATA_H_
+#ifdef __cplusplus
+  extern "C" {
+#endif /* __cplusplus */
+
 
 #include "../misc/misc.h"
 #include <malloc.h>
@@ -24,7 +28,7 @@ struct sCbData{
 };
 
 struct sCbData * AllocateMemoryForCBNode();
-struct sCbData * AppendNode(struct sCbData **head,char *ref_, char *init_val_,char *value_,char *name_,char *meta_info_, xmlDoc *_doc, CallBackInterfaceFunction _cbFunction);
+struct sCbData * AppendNode(struct sCbData **head,const char *ref_,const char *init_val_,const char *value_,const char *name_,const char *meta_info_, xmlDoc *_doc, CallBackInterfaceFunction _cbFunction);
     struct sCbData * MakeDummyData();
     struct sCbData *get_pointer_to_user_data_by_name(const char *_name, struct sCbData *head);
     void print_user_data(struct sCbData *head);
@@ -34,4 +38,8 @@ int UpdateModel(struct sCbData * head);
 void UpdateCallbackData(char *ref, char *data, struct sCbData *list);
 void UpdateModelandCallUserFunction(char *ref, char *data,struct sCbData *list );
 int UpdateRefsFromModel(struct sCbData * head);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
 #endif

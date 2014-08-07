@@ -1,5 +1,9 @@
 #ifndef SIMPLE_UI_XML_H
 #define SIMPLE_UI_XML_H
+#ifdef __cplusplus
+  extern "C" {
+#endif /* __cplusplus */
+
 #include <libxml/parser.h>
 #include "../sXforms.h"
 #include <libxml/xpath.h>
@@ -9,7 +13,7 @@
 sXformsNode * ParseXformsToTree(const char * xforms, xmlDoc **modelDocPtr);
 sXformsNodeAttr * MakeAttributesList(xmlNodePtr cur, xmlDocPtr ptr);
 char * sXmlNodeName(xmlNodePtr cur);
-char * sAppendString( char *src, char *text);
+char * sAppendString( const char *src, const char *text);
 void sParseNodesAndMakeTree(xmlNodePtr cur,sXformsNode **par, sXformsNode * head, xmlDocPtr doc, xmlDoc **modelDocPtr);
 char * sGetValueFromChildren(xmlNodePtr cur, char *nodeToSearch);
 void sAdjustPointersForLinkedList(sXformsNode **par, sXformsNode **child);
@@ -24,4 +28,8 @@ xmlNodeSetPtr sGetXpathValue(char *reference, xmlDocPtr doc);
 xmlXPathContextPtr sGetXpathEvalContext(xmlDocPtr doc);
 char * EvalNodeSetPtrForInstannce(xmlNodeSetPtr nodeset);
 //xmlXPathObjectPtr  sGetXpathObjectPtr(char *reference, xmlDocPtr doc);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
 #endif
