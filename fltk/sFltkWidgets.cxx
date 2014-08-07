@@ -138,7 +138,7 @@ struct sFltkUIHandler_s fltk_handlers[] = {
 
 
 void print_label(Fl_Widget *s, const char *text){
-	WriteLog(stdout,"\n[%s][%d] %s : %s",__FILE__,__LINE__,__func__,text,s->label());
+	WriteLog(stdout,"\n[%s][%d][%s] %s : %s",__FILE__,__LINE__,__func__,text,s->label());
 }
 
 
@@ -215,7 +215,6 @@ int sFltkUIHandler_f_TabsHandler(sXformsNode *head,struct sCbData **CallBackData
 		return -1;
 	}
 	WriteLog(stdout,"\n[%s][%d] parent = %s, dimensions of parent are (%d,%d,%d,%d)",__func__,__LINE__,parent->label(),parent->x(),parent->y(),parent->w(),parent->h());
-	int height = 0;
 	Fl_Group * tabsgroup;
 	Fl_Tabs *tabs;
 	head -> meta_info = (char *)"1";
