@@ -9,7 +9,7 @@
 #include "../../sCallbackData/sCallbackData.h"
 #include "../../xml/sXml.h"
 
-char *int2str[] = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19"};
+const char *int2str[] = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"};
 int i = 0;
 int row = 0;
 int column = 0;
@@ -133,8 +133,8 @@ struct sCbData * sKdeGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,Cal
     xmlNode * classwidget = Create1WidgetNodeWithStringProp(root_node,"classwidget","QWidget","windowTitle",sKDE_MAIN_WINDOW_NAME);
     Create1GeometryProp(classwidget,"0","0",KDE_WINDOW_WIDTH, KDE_WINDOW_HEIGHT);
     xmlNode *main_layout = CreateLayout(classwidget,"QVBoxLayout","verticalLayout_2");
-      xmlNode *ContentItem = CreateItemNode(main_layout,0,0,0);
-
+     xmlNode *ContentItem = CreateItemNode(main_layout,0,0,0);
+      xmlNode *gridLayout = CreateLayout(ContentItem,"QGridLayout","gridLayout_1");
        xmlNode *lowerBarItem = CreateItemNode(main_layout,0,0,0);
        xmlNode *horizontalLayout2 = CreateLayout(lowerBarItem,"QHBoxLayout","horizontalLayout2");
        xmlNode *horizontalLayout2Item = CreateItemNode(horizontalLayout2,0,0,0);
@@ -149,7 +149,7 @@ struct sCbData * sKdeGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,Cal
     xmlNode *resources = CreateXmlNode(NULL,"resources");
 
     struct sCbData *temp = (struct sCbData  *)0;
-    sKdeGenerateUIFromTree(head,ContentItem,&temp,modelDocPtr,func);
+    sKdeGenerateUIFromTree(head,gridLayout,&temp,modelDocPtr,func);
     // main content area
     xmlSaveFormatFileEnc(sKDE_UI_FILE, doc, "UTF-8", 1); // save file
     xmlFreeDoc(doc);  // free document
@@ -183,7 +183,7 @@ else{
 						//fprintf(stdout,"\t 'specialised'");
 						fprintf(stdout,"\n[%s][%d] start specialised %s:%s",__func__,__LINE__,temp->type,temp->name);
 						kde_handlers[x].handler(temp,par,CallBackData,modelDocPtr,func);
-						temp->meta_info = (char *)"1";  //node visited
+						temp->meta_info = strdup("1");  //node visited
 						break;
 					}
 				}
@@ -203,7 +203,7 @@ else{
 			    //fprintf(stdout,"\t 'generic'");
 				fprintf(stdout,"\n[%s][%d] start generic %s:%s",__func__,__LINE__,temp->type,temp->name);
 				kde_handlers[x].handler(temp,par,CallBackData,modelDocPtr,func);
-				temp->meta_info = (char *)"1";  //node visited
+				temp->meta_info = strdup("1");  //node visited
 				break;
 			}
 			x++;
@@ -223,7 +223,7 @@ return 0;
 int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
   //fprintf(stdout,"\n[%s][%d][head = %s,%s]",__func__,__LINE__,head->type,head->name);
- 	head -> meta_info = (char *)"1"; 
+ 	head -> meta_info = strdup("1"); 
  	sXformsNodeAttr xf_trigger_attr = {"type","tab_trigger",(char *)0,(char *)0,(sXformsNodeAttr *)0,(sXformsNodeAttr *)0}; 
  	int flag_t = 1; 
  	sXformsNode *xftrigger = SearchSubTreeForNodes(head,(char *)"xf:trigger",&xf_trigger_attr,0,1); 
@@ -240,7 +240,7 @@ int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
  		// search for xf:toggle inside this 
  		sXformsNode * toggle = SearchSubTreeForNodes(xftrigger,(char *)"xf:toggle",(sXformsNodeAttr *)0,0,0); 
  		if(toggle != 0){ 
- 			toggle->meta_info = (char *)"1"; 
+ 			toggle->meta_info = strdup("1"); 
  			sXformsNodeAttr *attr; 
  			for(attr = toggle->attr; attr; attr=attr->next){ 
  				if(!strcmp(attr->attrName,"case")){ 
@@ -266,7 +266,7 @@ int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
  			//fprintf(stdout,"\n[%s][%d]ERROR MAKING TABS",__FILE__,__LINE__); 
  			exit(1); 
  		} 
- 		xftrigger->meta_info = (char *)"1"; 
+ 		xftrigger->meta_info = strdup("1"); 
  		xftrigger  =  SearchSubTreeForNodes(head,(char *)"xf:trigger",&xf_trigger_attr,0,1); 
  	}} 
  	else 
@@ -281,14 +281,14 @@ int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 
      int i = 0; 
      sXformsNode *temp = head; 
-     head -> meta_info = (char *)"1"; 
+     head -> meta_info = strdup("1"); 
      for( i = 0; temp;  i++, temp = temp->next) 
      {
         fprintf(stdout,"\n[%s][%d] HEAD = %s:%s \t\t NODE = %s",__func__,__LINE__,temp->name, temp->type,node->name);
         row = 0;
         xmlNode *ItemContent = CreateItemNode(node,0,0,0);
         xmlNode *GridLayout = CreateLayout(ItemContent,"QGridLayout",sAppendString("Layout_",head->name) );
-        temp -> meta_info = (char *)"1"; 
+        temp -> meta_info = strdup("1"); 
         //sPrintsXformsTree(temp);
         sKdeGenerateUIFromTree(temp,GridLayout ,CallBackData,modelDocPtr,func);
         CreateSpacer(node,sAppendString("Spacer_",head->name),"Qt::Vertical","20","40");
@@ -299,29 +299,29 @@ int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 int kde_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int ddctr = 0;
-    head->meta_info = (char *)"1";
+    head->meta_info = strdup("1");
     
-    xmlNode *lblitem = CreateItemNode(node,0,int2str[row],int2str[0]);
-    Create1WidgetNodeWithStringProp(lblitem,sAppendString("Label_",sAppendString("DDlbl_",int2str[ddctr])), "QLabel","text", head->name); 
+    xmlNode *lblitem = CreateItemNode(node,0,itoa(row),int2str[0]);
+    Create1WidgetNodeWithStringProp(lblitem,sAppendString("Label_",sAppendString("DDlbl_",itoa(ddctr))), "QLabel","text", head->name); 
     
-    xmlNode *dditem = CreateItemNode(node,0,int2str[row],int2str[2]);
-    xmlNode *dd = Create1WidgetNode(dditem,sAppendString("DD_",int2str[ddctr]),"QComboBox",0,0,0,0);
+    xmlNode *dditem = CreateItemNode(node,0,itoa(row),int2str[2]);
+    xmlNode *dd = Create1WidgetNode(dditem,sAppendString("DD_",itoa(ddctr)),"QComboBox",0,0,0,0);
     //AppendNode(CallBackData,"NULL-REFERENCE", "NULL-INITVAL","NULL-VAL",sAppendString("DD_",int2str[ddctr]),"QComboBox");
         sXformsNodeAttr *attr = getAttrFromList(head,"ref");
           	 if(attr)
           	 {
-          	    AppendNode(CallBackData,s_dupstr(attr->meta_info),s_dupstr(attr->private_data),(char *)0,sAppendString("DD_",int2str[ddctr]),"QComboBox",modelDocPtr,func);
+          	    AppendNode(CallBackData,s_dupstr(attr->meta_info),s_dupstr(attr->private_data),(char *)0,sAppendString("DD_",itoa(ddctr)),"QComboBox",modelDocPtr,func);
           	 }
           	 else
           	 {
-          	    AppendNode(CallBackData,int2str[0],int2str[0],int2str[0],sAppendString("DD_",int2str[ddctr]),"QComboBox",modelDocPtr,func);
+          	    AppendNode(CallBackData,int2str[0],int2str[0],int2str[0],sAppendString("DD_",itoa(ddctr)),"QComboBox",modelDocPtr,func);
           	 }
     sXformsNode *temp;
     sXformsNode *xfchoices = SearchSubTreeForNodes(head,(char *)"xf:choices",(sXformsNodeAttr *)0,0,0);
     if( xfchoices ){
-			xfchoices->meta_info = (char *)"1";
+			xfchoices->meta_info = strdup("1");
 			for( temp=xfchoices->child; temp != 0; temp=temp->next){
-			    temp->meta_info = int2str[1];
+			    temp->meta_info = strdup(int2str[1]);
           xmlNode *choice = CreateItemNode(dd,0,0,0);
           CreateStringProperty(choice,"text", temp->name);
 			}
@@ -334,15 +334,15 @@ int kde_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBa
 int kde_f_RadioButtonList(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int radioctr = 0;
-    head->meta_info = (char *)"1";
+    head->meta_info = strdup("1");
   
-    xmlNode *lblitem = CreateItemNode(node,0,int2str[row],int2str[0]);
-    Create1WidgetNodeWithStringProp(lblitem,sAppendString("DDlbl_",int2str[radioctr]), "QLabel","text", head->name); 
-    xmlNode *radioitem = CreateItemNode(node,0,int2str[row],int2str[2]);
+    xmlNode *lblitem = CreateItemNode(node,0,itoa(row),int2str[0]);
+    Create1WidgetNodeWithStringProp(lblitem,sAppendString("DDlbl_",itoa(radioctr)), "QLabel","text", head->name); 
+    xmlNode *radioitem = CreateItemNode(node,0,itoa(row),int2str[2]);
     char *proptype[] = {"string","bool","bool"};
     char *propname[] = {"title","checkable","checked"};
     char *propval[] = {(char *)0,"false","false"};
-    xmlNode *QGroupBox = Create1WidgetNode(radioitem,sAppendString("QGroupBox_",int2str[radioctr]), "QGroupBox",propname,proptype,propval,3);    
+    xmlNode *QGroupBox = Create1WidgetNode(radioitem,sAppendString("QGroupBox_",itoa(radioctr)), "QGroupBox",propname,proptype,propval,3);    
     sXformsNode *temp;
     sXformsNode *xfchoices = SearchSubTreeForNodes(head,(char *)"xf:choices",(sXformsNodeAttr *)0,0,0);
     if( xfchoices ){
@@ -351,8 +351,8 @@ int kde_f_RadioButtonList(sXformsNode *head,xmlNode *node,struct sCbData **CallB
 			for( temp=xfchoices->child; temp != 0; ctr++, temp=temp->next){
 			    char buffer[5];
 			    sprintf(buffer,"%d",5 + 80*ctr);
-			    temp->meta_info = int2str[1];
-			    char *radioname = sAppendString("radio_",int2str[ctr]);
+			    temp->meta_info = strdup(int2str[1]);
+			    char *radioname = sAppendString("radio_",itoa(ctr));
 			    xmlNode *radio = Create1WidgetNode(QGroupBox,radioname,"QRadioButton",0,0,0,0);
 			    //AppendNode(CallBackData,"NULL-REFERENCE", "NULL-INITVAL","NULL-VAL",sAppendString("radio_",int2str[ctr]),"QRadioButton");
 			       sXformsNodeAttr *attr = getAttrFromList(temp,"ref");
@@ -382,9 +382,9 @@ int kde_f_CheckBoxList(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 			xfchoices->meta_info = (char *)"1";
 			int ctr = 0;
 			for( temp=xfchoices->child; temp != 0; ctr++,row++, temp=temp->next){
-			    xmlNode *item = CreateItemNode(node,0,int2str[row],int2str[0]);
-			    temp->meta_info = int2str[1];
-			    char *checkname = sAppendString("CheckBox_",int2str[checkboxctr]);
+			    xmlNode *item = CreateItemNode(node,0,itoa(row),int2str[0]);
+			    temp->meta_info = strdup(int2str[1]);
+			    char *checkname = sAppendString("CheckBox_",itoa(checkboxctr));
           Create1WidgetNodeWithStringProp(item,checkname,"QCheckBox","text",temp->name);
           //AppendNode(CallBackData,"NULL-REFERENCE", "NULL-INITVAL","NULL-VAL",sAppendString("CheckBox_",int2str[checkboxctr++]),"QCheckBox");
               sXformsNodeAttr *attr = getAttrFromList(temp,"ref");
@@ -405,10 +405,10 @@ int kde_f_InputHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 {
     
     head->meta_info = (char *)"1";
-    char *name = sAppendString("Input_",int2str[inputctr]);
-    xmlNode *lblitem = CreateItemNode(node,0,int2str[row],int2str[0]);
-    Create1WidgetNodeWithStringProp(lblitem,sAppendString("Inputlbl_",int2str[inputctr]), "QLabel","text", head->name); 
-    xmlNode *inputitem = CreateItemNode(node,0,int2str[row],int2str[2]);
+    char *name = sAppendString("Input_",itoa(inputctr));
+    xmlNode *lblitem = CreateItemNode(node,0,itoa(row),int2str[0]);
+    Create1WidgetNodeWithStringProp(lblitem,sAppendString("Inputlbl_",itoa(inputctr)), "QLabel","text", head->name); 
+    xmlNode *inputitem = CreateItemNode(node,0,itoa(row),int2str[2]);
     xmlNode *InputWidget = Create1WidgetNode(inputitem,name,"QLineEdit",0,0,0,0); 
     ActualName[lindex] = head->name;
     InputName[lindex] = name;
@@ -446,9 +446,9 @@ int kde_f_InputHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 int kde_f_LabelHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int labelctr = 0;
-    char *labelname = sAppendString("Label_",int2str[labelctr++]);
+    char *labelname = sAppendString("Label_",itoa(labelctr++));
     head->meta_info = (char *)"1";
-    xmlNode *item = CreateItemNode(node,0,int2str[row++],int2str[0]);
+    xmlNode *item = CreateItemNode(node,0,itoa(row++),int2str[0]);
     Create1WidgetNodeWithStringProp(item,labelname, "QLabel","text", "NULL"); 
     sXformsNodeAttr *attr = getAttrFromList(head,"ref");
   	 if(attr)
@@ -465,10 +465,10 @@ int kde_f_ButtonHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBac
 {
     static int btnctr = 0;
     head->meta_info = (char *)"1";
-    xmlNode *item = CreateItemNode(node,0,int2str[row++],int2str[0]);
-    Create1WidgetNodeWithStringProp(item,sAppendString("Btn_",int2str[btnctr]), "QPushButton","text", head->name);
+    xmlNode *item = CreateItemNode(node,0,itoa(row++),int2str[0]);
+    Create1WidgetNodeWithStringProp(item,sAppendString("Btn_",itoa(btnctr)), "QPushButton","text", head->name);
     //struct sCbData *btn =  AppendNode(CallBackData,"REFERENCE", "NULL","NULL",sAppendString("Btn_",int2str[btnctr]),"QPushButton");
-   struct sCbData *btnref  = AppendNode(CallBackData,"0","0","0",sAppendString("Btn_",int2str[btnctr]),"QPushButton",modelDocPtr,func);
+   struct sCbData *btnref  = AppendNode(CallBackData,"0","0","0",sAppendString("Btn_",itoa(btnctr)),"QPushButton",modelDocPtr,func);
 	 for(sXformsNode * temp = head;temp;temp=temp->prev)
     {
         if( !strcmp(temp->type,"xf:input") || !strcmp(temp->type,"xf:textarea") )
@@ -501,22 +501,22 @@ int kde_f_RangeHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
 {
     fprintf(stdout,"\n[%s][%d] HEAD = %s:%s \t\t NODE = %s",__func__,__LINE__,head->name, head->type,node->name);
     static int sliderctr = 0;
-    xmlNode *lblitem = CreateItemNode(node,0,int2str[row++],int2str[0]);
-    Create1WidgetNodeWithStringProp(lblitem,sAppendString("LabelSlider_",int2str[sliderctr++]), "QLabel","text", head->name); 
-    xmlNode *item = CreateItemNode(node,0,int2str[row++],int2str[0]);
+    xmlNode *lblitem = CreateItemNode(node,0,itoa(row++),int2str[0]);
+    Create1WidgetNodeWithStringProp(lblitem,sAppendString("LabelSlider_",itoa(sliderctr++)), "QLabel","text", head->name); 
+    xmlNode *item = CreateItemNode(node,0,itoa(row++),int2str[0]);
     char *proptype[] = {"number","number","enum","enum","number"};
     char *propval[] = {"100","50","Qt::Horizontal","QSlider::TicksBothSides","5"};
     char *propname[] = {"maximum","value","orientation","tickPosition","tickInterval"};
-    Create1WidgetNode(item,sAppendString("Slider_",int2str[sliderctr]),"QSlider",propname,proptype,propval,5);
+    Create1WidgetNode(item,sAppendString("Slider_",itoa(sliderctr)),"QSlider",propname,proptype,propval,5);
     //AppendNode(CallBackData,"REFERENCE", "NULL","NULL",sAppendString("Slider_",int2str[sliderctr]),"QSlider");
      sXformsNodeAttr *attr = getAttrFromList(head,"ref");
   	 if(attr)
   	 {
-  	    AppendNode(CallBackData,s_dupstr(attr->meta_info),s_dupstr(attr->private_data),(char *)0,sAppendString("Slider_",int2str[sliderctr]),"QSlider",modelDocPtr,func);
+  	    AppendNode(CallBackData,s_dupstr(attr->meta_info),s_dupstr(attr->private_data),(char *)0,sAppendString("Slider_",itoa(sliderctr)),"QSlider",modelDocPtr,func);
   	 }
   	 else
   	 {
-  	    AppendNode(CallBackData,int2str[0],int2str[0],int2str[0],sAppendString("Slider_",int2str[sliderctr]),"QSlider",modelDocPtr,func);
+  	    AppendNode(CallBackData,int2str[0],int2str[0],int2str[0],sAppendString("Slider_",itoa(sliderctr)),"QSlider",modelDocPtr,func);
   	 }
     sliderctr++;
     row++;
