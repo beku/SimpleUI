@@ -27,6 +27,7 @@
      // find widgets here 
      DisableDefaultAndConnectSignals();
      QPushButton *btn = qFindChild<QPushButton *>(this, sKDE_CLOSE_BUTTON);
+     if(!btn) { printf("QPushButton not found!\n"); return; }
      btn->setAutoDefault(false);
      connect(btn, SIGNAL(clicked()), this, SLOT(on_DoneButton_click()));
     //printf("\n cp-2");
