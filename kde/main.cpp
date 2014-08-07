@@ -14,7 +14,7 @@
 
 void usage(int argc, char ** argv)
 {
-	fprintf(stdout,"incorrect usage\n");
+	fprintf(stdout,"\nUsage:\n%s -i xforms.xhtml [-o result]\n", argv[0]);
 }
 
 #if defined(LIBXML_TREE_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
@@ -60,7 +60,8 @@ int main ( int argc , char **argv )
 			      case 'o': OY_PARSE_STRING_ARG( output_xml_file ); break;
 			      case 'i': OY_PARSE_STRING_ARG( input_xml_file ); break;
 			      case 'v': break;//oy_debug += 1; break;
-			      case 'h': /* only for compatibility with cmd line */ break;
+			      case 'h': usage(argc, argv);
+				        exit (0); break;
 			      case 'l': /* only for compatibility with cmd line */ break;
 #if 0
 			      case '-':
@@ -123,9 +124,9 @@ int main ( int argc , char **argv )
 
 fprintf(stdout,"INPUT FILE = %s\n",input_xml_file);
 
-#if 0
   if(!input_xml_file)
   {
+#if 0
     size_t text_size = 0;
     text = oyReadStdinToMem_(&text_size, oyAllocateFunc_);
 
@@ -134,9 +135,12 @@ fprintf(stdout,"INPUT FILE = %s\n",input_xml_file);
                         usage(argc, argv);
                         exit (0);
     }
+#else
+  usage(argc, argv);
+  exit (0);
+#endif
   }
 
-#endif
 
   
   if(input_xml_file)
