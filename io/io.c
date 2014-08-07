@@ -5,6 +5,10 @@
 #include<malloc.h>
 #include "../simpleUI.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif /* __cplusplus */
+
 
 char * sReadFileToMem(const char *filename)
 {
@@ -42,3 +46,7 @@ char * sReadFileToMem(const char *filename)
 	}
 	return filetext;
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
