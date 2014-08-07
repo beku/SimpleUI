@@ -35,6 +35,6 @@ char * itoa(int number)
     number = number/10;
     buffer[x] = int2str[remainder];
   }
-  printf("\n[****] Entered Number = %d, converted = %s",number,buffer[x+1]);
+  printf("\n[****] Entered Number = %d, converted = %s",number, &buffer[x+1]);
   return (buffer + x+1);
 }
