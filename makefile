@@ -26,14 +26,14 @@ MISC_SOURCES =	\
 
 all:	$(TARGETS)
 
-sFltk:
+sFltk:	$(FLTK_SOURCES) $(MISC_SOURCES)
 	g++ $(FLAGS) -o sFltk $(FLTK_SOURCES) $(MISC_SOURCES) $(XML_FLAGS) $(FLTK_FLAGS)
 
-sGtk:
+sGtk:	$(GTK_SOURCES) $(MISC_SOURCES)
 	gcc $(FLAGS) -o  sGtk $(GTK_SOURCES) $(MISC_SOURCES) $(XML_FLAGS) $(GTK_FLAGS) -export-dynamic
 
 sKde:	Makefile
-	-make -f Makefile
+	make -f Makefile
 
 Makefile:
 	qmake
