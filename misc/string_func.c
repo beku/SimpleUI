@@ -2,7 +2,11 @@
 #include <string.h>
 #include <malloc.h>
 
-char * s_dupstr(char *src)
+#ifdef __cplusplus
+  extern "C" {
+#endif /* __cplusplus */
+
+char * s_dupstr(const char *src)
 {
 	int srclen = 0;
 	if( src == 0 )
@@ -38,3 +42,7 @@ char * itoa(int number)
   printf("\n[****] Entered Number = %d, converted = %s",number, &buffer[x+1]);
   return (buffer + x+1);
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
