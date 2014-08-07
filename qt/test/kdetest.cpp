@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "../sKdeProcess.h"
+#include "../sQtProcess.h"
 #include <libxml/parser.h>
 #include <string.h>
 #include <libxml/xpath.h>

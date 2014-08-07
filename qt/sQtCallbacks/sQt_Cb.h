@@ -1,5 +1,5 @@
-#ifndef SIMPLE_UI_KDE_CB_H
-#define SIMPLE_UI_KDE_CB_H
+#ifndef SIMPLE_UI_QT_CB_H
+#define SIMPLE_UI_QT_CB_H
 
 struct qt_cb_data{
     char *ref;
@@ -19,5 +19,5 @@ struct qt_cb_data{
     struct qt_cb_data *get_pointer_to_user_data_by_name(const char *_name, struct qt_cb_data *head);
     void print_user_data(struct qt_cb_data *head);
 
-#endif // SAMPLE1_CB_H
+#endif // SIMPLE_UI_QT_CB_H
 

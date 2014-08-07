@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
-#include "sKdeRenderer.h"
+#include "sQtRenderer.h"
 
 xmlNode *Create1GeometryProp(xmlNode *par,char *x, char *y, char *width, char *height)
 {

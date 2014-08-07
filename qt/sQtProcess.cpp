@@ -1,7 +1,7 @@
 #include <QApplication>
-#include "sKDE.h"
-#include "sKdeCallbacks/sKde_Cb.h"
-#include "sKdeRenderers/sKdeRenderer.h"
+#include "sQt.h"
+#include "sQtCallbacks/sQt_Cb.h"
+#include "sQtRenderers/sQtRenderer.h"
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <string.h>
@@ -11,7 +11,7 @@
 #include "../io/io.h"
 #include "../sCallbackData/sCallbackData.h"
 #include "../sXforms.h"
-#include "sKdeProcess.h"
+#include "sQtProcess.h"
 
 
 int process(char *input_xml_file, char *output_xml_file,CallBackInterfaceFunction cb)
@@ -34,17 +34,17 @@ int process(char *input_xml_file, char *output_xml_file,CallBackInterfaceFunctio
 
   if(cb == 0)
   {
-    CallBackData = sKdeGenerateGladeFile(head,modelDocPtr,&DummyIfFunction);
+    CallBackData = sQtGenerateGladeFile(head,modelDocPtr,&DummyIfFunction);
   }
   else
   {
-    CallBackData = sKdeGenerateGladeFile(head,modelDocPtr,cb);
+    CallBackData = sQtGenerateGladeFile(head,modelDocPtr,cb);
   }
   print_user_data(CallBackData);
   int argc = 0;
   char **argv = 0;
       QApplication a(argc, argv);
-    SimpleUiKde w(CallBackData);
+    SimpleUiQt w(CallBackData);
     w.show();
     a.exec();
    

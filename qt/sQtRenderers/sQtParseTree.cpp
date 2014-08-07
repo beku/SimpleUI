@@ -2,10 +2,10 @@
 #include <string.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
-#include "sKdeRenderer.h"
+#include "sQtRenderer.h"
 #include "../../simpleUI.h"
 #include "../../sXforms.h"
-//#include "../sKdeCallbacks/sKde_Cb.h"
+//#include "../sQtCallbacks/sQt_Cb.h"
 #include "../../sCallbackData/sCallbackData.h"
 #include "../../xml/sXml.h"
 
@@ -13,20 +13,20 @@ const char *int2str[] = {"0","1","2","3","4","5","6","7","8","9","10","11","12",
 int i = 0;
 int row = 0;
 int column = 0;
-sKdeUIHandlers handler[100];
+sQtUIHandlers handler[100];
 int lindex = 0;
 char *InputName[10];
 char *ActualName[10];
 int InputCountStart = 0;
 int inputctr = 0;
-struct sKdeUIHandlers_data kde_handlers[] = {
+struct sQtUIHandlers_data kde_handlers[] = {
 	{
 		(char *)"xf:select1",
   		(char *)"drop downs",
   		(char *)0,
   		(char *)0,
   		0,
-  		(sKdeUIHandlers)kde_f_Select1Handler
+  		(sQtUIHandlers)kde_f_Select1Handler
 	},
 	{
 		(char *)"xf:select1",
@@ -34,7 +34,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
 		(char *)"appearance",
 		(char *)"full",
 		1,
-  		(sKdeUIHandlers)kde_f_RadioButtonList
+  		(sQtUIHandlers)kde_f_RadioButtonList
 	},
 	{
 		(char *)"xf:select",
@@ -42,7 +42,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
 		(char *)"appearance",
 		(char *)"full",
 		1,
-		(sKdeUIHandlers)kde_f_CheckBoxList
+		(sQtUIHandlers)kde_f_CheckBoxList
 	},
 	{
 		(char *)"xf:input",
@@ -50,7 +50,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
   		(char *)0,
   		(char *)0,
   		0, // generic for now
-  		(sKdeUIHandlers)kde_f_InputHandler
+  		(sQtUIHandlers)kde_f_InputHandler
 	},
 	{
 	    (char *)"xf:secret",
@@ -58,7 +58,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
 	    (char *)0,
 	    (char *)0,
 	    0,
-	    (sKdeUIHandlers)kde_f_InputHandler
+	    (sQtUIHandlers)kde_f_InputHandler
 	},
 	{
 	    (char *)"xf:textarea",
@@ -66,7 +66,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
 	    (char *)0,
 	    (char *)0,
 	    0,
-	    (sKdeUIHandlers)kde_f_InputHandler
+	    (sQtUIHandlers)kde_f_InputHandler
 	},
 	{
 		(char *)"xf:output",
@@ -74,7 +74,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
   		(char *)0,
   		(char *)0,
   		0, // generic for now
-  		(sKdeUIHandlers)kde_f_LabelHandler
+  		(sQtUIHandlers)kde_f_LabelHandler
 	},
 	{
 		(char *)"xf:trigger",
@@ -82,7 +82,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
   		(char *)0,
   		(char *)0,
   		0,
-  		(sKdeUIHandlers)kde_f_ButtonHandler
+  		(sQtUIHandlers)kde_f_ButtonHandler
 	},
 	{
 		(char *)"xf:group",
@@ -90,7 +90,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
 		(char *)"type",
 		(char *)"tabs",
 		0,
-		(sKdeUIHandlers)kde_f_TabsHandler
+		(sQtUIHandlers)kde_f_TabsHandler
 	},
 		{
 		(char *)"xf:group",
@@ -98,7 +98,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
 		(char *)"type",
 		(char *)"frame",
 		1,
-		(sKdeUIHandlers)kde_f_FrameHandler
+		(sQtUIHandlers)kde_f_FrameHandler
 	},
 	{
 		(char *)"xf:range",
@@ -106,7 +106,7 @@ struct sKdeUIHandlers_data kde_handlers[] = {
 		(char *)0,
 		(char *)0,
 		0,
-		(sKdeUIHandlers)kde_f_RangeHandler
+		(sQtUIHandlers)kde_f_RangeHandler
 	},
 	{
 		(char *)0,
@@ -114,12 +114,12 @@ struct sKdeUIHandlers_data kde_handlers[] = {
   		(char *)0,
   		(char *)0,
   		1,
-  		(sKdeUIHandlers)0
+  		(sQtUIHandlers)0
 	}
 };
 
 
-struct sCbData * sKdeGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,CallBackInterfaceFunction func )
+struct sCbData * sQtGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,CallBackInterfaceFunction func )
 {
     xmlDoc *doc = NULL;
     xmlNode *root_node = NULL;
@@ -129,9 +129,9 @@ struct sCbData * sKdeGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,Cal
     root_node = xmlNewNode(NULL,BAD_CAST"ui");  // root node
     CreateNodeAttribute(root_node,"version","4.0");
     xmlDocSetRootElement(doc, root_node); // set root node
-    xmlNode *classname = Create1ObjectNode(root_node,"class", "SimpleUiKde"); // create main window
-    xmlNode * classwidget = Create1WidgetNodeWithStringProp(root_node,"classwidget","QWidget","windowTitle",sKDE_MAIN_WINDOW_NAME);
-    Create1GeometryProp(classwidget,"0","0",KDE_WINDOW_WIDTH, KDE_WINDOW_HEIGHT);
+    xmlNode *classname = Create1ObjectNode(root_node,"class", "SimpleUiQt"); // create main window
+    xmlNode * classwidget = Create1WidgetNodeWithStringProp(root_node,"classwidget","QWidget","windowTitle",sQT_MAIN_WINDOW_NAME);
+    Create1GeometryProp(classwidget,"0","0",QT_WINDOW_WIDTH, QT_WINDOW_HEIGHT);
     xmlNode *main_layout = CreateLayout(classwidget,"QVBoxLayout","verticalLayout_2");
      xmlNode *ContentItem = CreateItemNode(main_layout,0,0,0);
       xmlNode *gridLayout = CreateLayout(ContentItem,"QGridLayout","gridLayout_1");
@@ -141,7 +141,7 @@ struct sCbData * sKdeGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,Cal
        xmlNode *horizontalLayout = CreateLayout(horizontalLayout2Item,"QHBoxLayout","horizontalLayout");
        xmlNode *spacer = CreateSpacer(horizontalLayout,"horizontalSpacer","Qt::Horizontal","40","20");
        xmlNode *DoneBtnItem = CreateItemNode(horizontalLayout,0,0,0);
-       xmlNode *DoneBtn = Create1WidgetNodeWithStringProp(DoneBtnItem,sKDE_CLOSE_BUTTON,"QPushButton","text","Done");
+       xmlNode *DoneBtn = Create1WidgetNodeWithStringProp(DoneBtnItem,sQT_CLOSE_BUTTON,"QPushButton","text","Done");
     
     xmlNode *layoutdefault = CreateXmlNode(NULL,"layoutdefault");
     CreateNodeAttribute(layoutdefault,"spacing","6");
@@ -149,16 +149,16 @@ struct sCbData * sKdeGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,Cal
     xmlNode *resources = CreateXmlNode(NULL,"resources");
 
     struct sCbData *temp = (struct sCbData  *)0;
-    sKdeGenerateUIFromTree(head,gridLayout,&temp,modelDocPtr,func);
+    sQtGenerateUIFromTree(head,gridLayout,&temp,modelDocPtr,func);
     // main content area
-    xmlSaveFormatFileEnc(sKDE_UI_FILE, doc, "UTF-8", 1); // save file
+    xmlSaveFormatFileEnc(sQT_UI_FILE, doc, "UTF-8", 1); // save file
     xmlFreeDoc(doc);  // free document
     xmlCleanupParser();  //clean parse
-    //AppendNode(&temp,"NULL-REFERENCE", "NULL-INITVAL","NULL-VAL",sKDE_CLOSE_BUTTON,"QPushButton",modelDocPtr,func);
+    //AppendNode(&temp,"NULL-REFERENCE", "NULL-INITVAL","NULL-VAL",sQT_CLOSE_BUTTON,"QPushButton",modelDocPtr,func);
     return temp;
 }
 
-int sKdeGenerateUIFromTree(sXformsNode * head, xmlNode *par,struct sCbData **CallBackData, xmlDoc *modelDocPtr,CallBackInterfaceFunction func )
+int sQtGenerateUIFromTree(sXformsNode * head, xmlNode *par,struct sCbData **CallBackData, xmlDoc *modelDocPtr,CallBackInterfaceFunction func )
 {
 if( head == 0 ){
 	//fprintf(stderr,"\n no data to read from");
@@ -212,7 +212,7 @@ else{
 		if( temp->child == 0){
 			continue;
 		}else{
-			sKdeGenerateUIFromTree(temp,par,CallBackData,modelDocPtr,func);
+			sQtGenerateUIFromTree(temp,par,CallBackData,modelDocPtr,func);
 		}}
 	}
 	
@@ -257,7 +257,7 @@ int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
       xmlNode *TabScrollWidgetContent = Create1WidgetNode(TabScrollWidget,sAppendString("Tab_QScrollAreaContent_",xftrigger->name),"QWidget",0,0,0,0);
       Create1GeometryProp(TabScrollWidgetContent,"0", "0", "639","342");
       xmlNode *ContentLayout = CreateLayout(TabScrollWidgetContent,"QVBoxLayout",sAppendString("verticalLayout",xftrigger->name) );
-      sKdeGenerateUIFromTree(tab_content,ContentLayout ,CallBackData,modelDocPtr,func);
+      sQtGenerateUIFromTree(tab_content,ContentLayout ,CallBackData,modelDocPtr,func);
       i++; 
  					} 
  				} 
@@ -290,7 +290,7 @@ int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
         xmlNode *GridLayout = CreateLayout(ItemContent,"QGridLayout",sAppendString("Layout_",head->name) );
         temp -> meta_info = strdup("1"); 
         //sPrintsXformsTree(temp);
-        sKdeGenerateUIFromTree(temp,GridLayout ,CallBackData,modelDocPtr,func);
+        sQtGenerateUIFromTree(temp,GridLayout ,CallBackData,modelDocPtr,func);
         CreateSpacer(node,sAppendString("Spacer_",head->name),"Qt::Vertical","20","40");
      } 
      fprintf(stdout,"\n[%s][%d] NUMBER OF CHILDREN %d",__func__,__LINE__,i); 
