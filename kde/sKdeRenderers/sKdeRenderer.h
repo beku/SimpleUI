@@ -47,7 +47,7 @@ int kde_f_RangeHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     // functions defined in sKdeRenderer_Helper.c
 xmlNode *Create1ObjectNode(xmlNode *par,char *nodename, char *value);
 xmlNode *CreateNodeText(xmlNode* par,char *val);
-xmlAttr * CreateNodeAttribute(xmlNode *node, char *attrName, char *attrValue);
+xmlAttr * CreateNodeAttribute(xmlNode *node, const char *attrName, const char *attrValue);
 xmlNode *Create1WidgetNode(xmlNode *par,char *name, char *classname,char **prop_name, char **prop_type, char **value, int num_prop);
 xmlNode *Create1PropertyNode(xmlNode *par,char *prop_name,char *prop_type, char *value);
 void CreatePropertyNodes(xmlNode *par,char **prop_name, char **prop_type, char **value, int num_prop);
@@ -56,7 +56,7 @@ xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par,char *name, char *classnam
 xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval );
 xmlNode *CreateLayout(xmlNode *par,char *classname, char *name );
 xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *width, char *height );
-xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, char * row, char * column);
+xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, const char * row, const char * column);
 xmlNode * CreateXmlNode(xmlNsPtr ns, char * name);
 xmlNode *CreateStringAttribute(xmlNode *par, char *strval );
 #endif

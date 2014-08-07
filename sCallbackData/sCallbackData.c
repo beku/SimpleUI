@@ -28,7 +28,7 @@ struct sCbData * AllocateMemoryForCBNode()
 	return node;
 }
 
-struct sCbData * AppendNode(struct sCbData **head,char *ref_, char *init_val_,char *value_,char *name_,char *meta_info_, xmlDoc *_doc, CallBackInterfaceFunction _cbFunction){
+struct sCbData * AppendNode(struct sCbData **head,const char *ref_, const char *init_val_,const char *value_,const char *name_,const char *meta_info_, xmlDoc *_doc, CallBackInterfaceFunction _cbFunction){
 	/*
 	1. allocate memory
 	2. adjust the values

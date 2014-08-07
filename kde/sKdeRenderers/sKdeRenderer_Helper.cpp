@@ -79,7 +79,7 @@ xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par,char *name, char *classnam
     return new_node;
 }
 
-xmlAttr * CreateNodeAttribute(xmlNode *node, char *attrName, char *attrValue)
+xmlAttr * CreateNodeAttribute(xmlNode *node, const char *attrName, const char *attrValue)
 {
     xmlAttr *attr = NULL;
     attr = xmlNewProp(node,BAD_CAST attrName,BAD_CAST attrValue);
@@ -148,7 +148,7 @@ xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *wi
   return itemNode;
 }
 
-xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, char * row, char * column)
+xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, const char * row, const char * column)
 {
   xmlNode *itemNode = CreateXmlNode(NULL,"item");
   if( row != 0 && column != 0)

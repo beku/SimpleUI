@@ -227,7 +227,7 @@ char * sGetTextFromNode(xmlNodePtr node)
   return "NULL";
 }
 
-char * sAppendString( char *src, char *text)
+char * sAppendString( const char *src, const char *text)
 {
 	int text_len , text_ctr = 0;
 	int src_len, src_ctr = 0;
