@@ -2,6 +2,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include "sQtRenderer.h"
+#include "../../xml/sXml.h"
 
 xmlNode *Create1GeometryProp(xmlNode *par,char *x, char *y, char *width, char *height)
 {
@@ -116,6 +117,20 @@ xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval )
       Create1ObjectNode(new_node,"string",strval);
   }
   xmlAddChild(par,new_node);
+}
+
+xmlNode *CreateFrame(xmlNode *par,char *classname, char *name )
+{
+  xmlNode *frameNode = Create1ObjectNode(par,"widget",0);
+  CreateNodeAttribute(frameNode,"class",classname); 
+  CreateNodeAttribute(frameNode,"name",sAppendString("group_",name)); 
+  xmlNode *new_node;
+
+  CreateStringProperty(frameNode,"title",name );
+
+  new_node = CreateLayout(frameNode,"QGridLayout",sAppendString("gridLayout_",name) );
+
+  return new_node;
 }
 
 xmlNode *CreateLayout(xmlNode *par,char *classname, char *name )

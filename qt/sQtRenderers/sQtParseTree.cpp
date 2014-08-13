@@ -280,21 +280,21 @@ int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
 int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
 
-     int i = 0; 
-     sXformsNode *temp = head; 
-     head -> meta_info = strdup("1"); 
-     for( i = 0; temp;  i++, temp = temp->next) 
+     int i = 0, old_row = row;
+     sXformsNode *temp = head;
+     head -> meta_info = strdup("1");
+     for( i = 0; temp;  i++, temp = temp->next)
      {
         fprintf(stdout,"\n[%s][%d] HEAD = %s:%s \t\t NODE = %s",__func__,__LINE__,temp->name, temp->type,node->name);
-        row = 0;
-        xmlNode *ItemContent = CreateItemNode(node,0,0,0);
-        xmlNode *GridLayout = CreateLayout(ItemContent,"QGridLayout",sAppendString("Layout_",head->name) );
-        temp -> meta_info = strdup("1"); 
+        xmlNode *itemContent = CreateItemNode(node,0,itoa(row++),int2str[0]);
+        xmlNode *GridLayout = CreateFrame(itemContent,"QGroupBox",head->name );
+        temp -> meta_info = strdup("1");
         //sPrintsXformsTree(temp);
         sQtGenerateUIFromTree(temp,GridLayout ,CallBackData,modelDocPtr,func);
         CreateSpacer(GridLayout,sAppendString("Spacer_",head->name),"Qt::Vertical","20","40", itoa(row),int2str[0] );
-     } 
-     fprintf(stdout,"\n[%s][%d] NUMBER OF CHILDREN %d",__func__,__LINE__,i); 
+     }
+     fprintf(stdout,"\n[%s][%d] NUMBER OF CHILDREN %d",__func__,__LINE__,i);
+     row = old_row;
 }
 
 int kde_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)

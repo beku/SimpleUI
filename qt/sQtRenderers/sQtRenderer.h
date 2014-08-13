@@ -55,6 +55,7 @@ xmlNode *Create1GeometryProp(xmlNode *par,char *x, char *y, char *width, char *h
 xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par,char *name, char *classname,char *propname, char *strval);
 xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval );
 xmlNode *CreateLayout(xmlNode *par,char *classname, char *name );
+xmlNode *CreateFrame(xmlNode *par,char *classname, char *name );
 xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *width, char *height, const char * row, const char * column );
 xmlNode *CreateItemNode(xmlNode *par,xmlNode *child, const char * row, const char * column);
 xmlNode * CreateXmlNode(xmlNsPtr ns, char * name);
