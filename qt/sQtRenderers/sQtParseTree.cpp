@@ -231,7 +231,8 @@ int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
      char *propname[] = {"currentIndex"};
      char *proptype[] = {"number"};
      char *propval[] = {"0"};
-     xmlNode *MaintabWidget  = Create1WidgetNode(node,"TabWidget","QTabWidget",propname,proptype,propval,1);
+    xmlNode *lblitem = CreateItemNode(node,0,itoa(row),int2str[0]);
+     xmlNode *MaintabWidget  = Create1WidgetNode(lblitem,"TabWidget","QTabWidget",propname,proptype,propval,1);
      
      int i = 0; 
  	while( xftrigger != 0){ 
