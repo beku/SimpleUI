@@ -139,7 +139,7 @@ struct sCbData * sQtGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,Call
        xmlNode *horizontalLayout2 = CreateLayout(lowerBarItem,"QHBoxLayout","horizontalLayout2");
        xmlNode *horizontalLayout2Item = CreateItemNode(horizontalLayout2,0,0,0);
        xmlNode *horizontalLayout = CreateLayout(horizontalLayout2Item,"QHBoxLayout","horizontalLayout");
-       xmlNode *spacer = CreateSpacer(horizontalLayout,"horizontalSpacer","Qt::Horizontal","40","20");
+       xmlNode *spacer = CreateSpacer(horizontalLayout,"horizontalSpacer","Qt::Horizontal","40","20", 0,0 );
        xmlNode *DoneBtnItem = CreateItemNode(horizontalLayout,0,0,0);
        xmlNode *DoneBtn = Create1WidgetNodeWithStringProp(DoneBtnItem,sQT_CLOSE_BUTTON,"QPushButton","text","Done");
     
@@ -292,7 +292,7 @@ int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
         temp -> meta_info = strdup("1"); 
         //sPrintsXformsTree(temp);
         sQtGenerateUIFromTree(temp,GridLayout ,CallBackData,modelDocPtr,func);
-        CreateSpacer(node,sAppendString("Spacer_",head->name),"Qt::Vertical","20","40");
+        CreateSpacer(GridLayout,sAppendString("Spacer_",head->name),"Qt::Vertical","20","40", itoa(row),int2str[0] );
      } 
      fprintf(stdout,"\n[%s][%d] NUMBER OF CHILDREN %d",__func__,__LINE__,i); 
 }

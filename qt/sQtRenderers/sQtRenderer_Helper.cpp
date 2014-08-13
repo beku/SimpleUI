@@ -126,9 +126,14 @@ xmlNode *CreateLayout(xmlNode *par,char *classname, char *name )
   return layoutNode;
 }
 
-xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *width, char *height )
+xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *width, char *height, const char * row, const char * column )
 {
   xmlNode *itemNode = CreateXmlNode(NULL,"item");
+  if( row != 0 && column != 0)
+  {
+    CreateNodeAttribute(itemNode,"row",row); 
+    CreateNodeAttribute(itemNode,"column",column); 
+  }
   xmlNode *spacerNode = CreateXmlNode(NULL,"spacer");
   CreateNodeAttribute(spacerNode,"name",spacerName); 
   xmlNode *PropNode = CreateXmlNode(NULL,"property");
