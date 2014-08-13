@@ -287,7 +287,7 @@ int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
      {
         fprintf(stdout,"\n[%s][%d] HEAD = %s:%s \t\t NODE = %s",__func__,__LINE__,temp->name, temp->type,node->name);
         xmlNode *itemContent = CreateItemNode(node,0,itoa(row++),int2str[0]);
-        xmlNode *GridLayout = CreateFrame(itemContent,"QGroupBox",head->name );
+        xmlNode *GridLayout = CreateFrame(itemContent,"QGroupBox",temp->name );
         temp -> meta_info = strdup("1");
         //sPrintsXformsTree(temp);
         sQtGenerateUIFromTree(temp,GridLayout ,CallBackData,modelDocPtr,func);
