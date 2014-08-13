@@ -30,6 +30,8 @@ SimpleUIGtk: 	$(CORE_LIB) gtk/sGtk.c gtk/sGtkRenderers/sGtkParseTree.c gtk/sGtkR
 .SUFFIXES:	.c
 
 .SILENT:
+.PHONY:	SimpleUIQt
+
 
 .c.o:
 	echo Compiling $< ...
