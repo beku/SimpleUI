@@ -86,7 +86,7 @@ struct sCbData * MakeDummyData()
 void DummyIfFunction(xmlDoc *ptr)
 {
 /*  printf("\n =============================== ");*/
-  printf("\n i am in dummy interface function");
+  printf("i am in dummy interface function\n");
 /*  printf("\n =============================== ");*/
 }
 
@@ -97,16 +97,15 @@ void print_user_data(struct sCbData *head)
 	fprintf(stdout,"\n == PRINTING USER DATA == \n");
 	while( temp != 0)
 	{
-		fprintf(stdout,"\n( %s,%s,%s,%s,%s )",temp->ref,temp->init_val,temp->value,temp->name,temp->meta_info);
+		fprintf(stdout,"( %s,%s,%s,%s,%s )\n",temp->ref,temp->init_val,temp->value,temp->name,temp->meta_info);
 		temp2 = temp->nextref;
 		while( temp2 )
 		{
-			fprintf(stdout,"\n\t -> ( %s,%s,%s,%s,%s )",temp2->ref,temp2->init_val,temp2->value,temp2->name,temp2->meta_info);
+			fprintf(stdout,"\t -> ( %s,%s,%s,%s,%s )\n",temp2->ref,temp2->init_val,temp2->value,temp2->name,temp2->meta_info);
 			temp2 = temp2->next;
 		}
 		temp = temp->next;
 	}
-	fprintf(stdout,"\n");
 }
 
 struct sCbData *get_pointer_to_user_data_by_name(const char *_name, struct sCbData *head)
