@@ -4,7 +4,7 @@
 
 DEPENDPATH += . sQtCallbacks sQtRenderers
 INCLUDEPATH += . sQtCallbacks sQtRenderers
-LIBS    += -L../ -lSimpleUICore
+LIBS    += -L../ -lSimpleUiCore
 
 HEADERS += sQt.h \
            sQtCallbacks/sQt_Cb.h \
