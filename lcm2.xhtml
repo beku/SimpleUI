@@ -45,11 +45,11 @@
   xf|select1 xf|label, xf|choices xf|label  { display: table-cell; }
   </style></head>
 <body>
- <xf:group type="h3">
+ <xf:group type="frame">
   <xf:label>Oyranos Behaviour:</xf:label>
   <xf:hint>Settings affecting the Behaviour in various situations</xf:hint>
   <xf:help>Color management has in some situations to resolve unclear situations. This can be done by automatic applying preselected choices or on a case to case base. In unclear situations users can get alerted if they wish and perform manual control.</xf:help>
-  <xf:group type="h4">
+  <xf:group type="frame">
    <xf:label>Rendering</xf:label>
    <xf:hint>The kind of ICC gamut mapping for transforming colors between differently sized color spaces</xf:hint>
    <xf:help>The conversion between color spaces of different shape and size can happen in various ways. The Perceptual rendering intent is usual the best choice for photographs and artistic imagery. It is used in many automatic systems. The Relative Colorimetric rendering intent provides a well-defined standard, one-to-one color mapping, but without applying white point adaption. This can lead to color clipping in case of colors falling outside the target gamut as a price for the otherwise colorimetric correctness. The Relative Colorimetric intent is often used in combination with Black Point Compensation. The Saturation rendering intent shall provide an optimal use of saturated device colors. The Absolute Colorimetric rendering intent works like the relative colorimetric one except the white point is adapted. All rendering intents beside the colorimetric ones rely on the color tables designed by the profile vendor.</xf:help>
@@ -107,7 +107,7 @@
       </xf:choices>
      </xf:select1>
   </xf:group>
-  <xf:group type="h4">
+  <xf:group type="frame">
    <xf:label>Proofing</xf:label>
    <xf:hint>Proofing Settings</xf:hint>
    <xf:help>Proofing Settings allows one to decide about the simulation color space.</xf:help>
@@ -159,7 +159,7 @@
   </xf:group>
  </xf:group>
 
-  <xf:group type="h3">    <xf:label>little CMS 2 Extended Options:</xf:label>
+  <xf:group type="frame">    <xf:label>little CMS 2 Extended Options:</xf:label>
      <xf:select1 ref="/org/oyranos/openicc/icc/cmyk_cmyk_black_preservation">
       <xf:label>Black Preservation</xf:label>
       <xf:hint>Decide how to preserve the black channel for Cmyk to Cmyk transforms</xf:hint>
