@@ -19,14 +19,14 @@ char *InputName[10];
 char *ActualName[10];
 int InputCountStart = 0;
 int inputctr = 0;
-struct sQtUIHandlers_data kde_handlers[] = {
+struct sQtUIHandlers_data qt_handlers[] = {
 	{
 		(char *)"xf:select1",
   		(char *)"drop downs",
   		(char *)0,
   		(char *)0,
   		0,
-  		(sQtUIHandlers)kde_f_Select1Handler
+  		(sQtUIHandlers)qt_f_Select1Handler
 	},
 	{
 		(char *)"xf:select1",
@@ -34,7 +34,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
 		(char *)"appearance",
 		(char *)"full",
 		1,
-  		(sQtUIHandlers)kde_f_RadioButtonList
+  		(sQtUIHandlers)qt_f_RadioButtonList
 	},
 	{
 		(char *)"xf:select",
@@ -42,7 +42,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
 		(char *)"appearance",
 		(char *)"full",
 		1,
-		(sQtUIHandlers)kde_f_CheckBoxList
+		(sQtUIHandlers)qt_f_CheckBoxList
 	},
 	{
 		(char *)"xf:input",
@@ -50,7 +50,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
   		(char *)0,
   		(char *)0,
   		0, // generic for now
-  		(sQtUIHandlers)kde_f_InputHandler
+  		(sQtUIHandlers)qt_f_InputHandler
 	},
 	{
 	    (char *)"xf:secret",
@@ -58,7 +58,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
 	    (char *)0,
 	    (char *)0,
 	    0,
-	    (sQtUIHandlers)kde_f_InputHandler
+	    (sQtUIHandlers)qt_f_InputHandler
 	},
 	{
 	    (char *)"xf:textarea",
@@ -66,7 +66,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
 	    (char *)0,
 	    (char *)0,
 	    0,
-	    (sQtUIHandlers)kde_f_InputHandler
+	    (sQtUIHandlers)qt_f_InputHandler
 	},
 	{
 		(char *)"xf:output",
@@ -74,7 +74,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
   		(char *)0,
   		(char *)0,
   		0, // generic for now
-  		(sQtUIHandlers)kde_f_LabelHandler
+  		(sQtUIHandlers)qt_f_LabelHandler
 	},
 	{
 		(char *)"xf:trigger",
@@ -82,7 +82,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
   		(char *)0,
   		(char *)0,
   		0,
-  		(sQtUIHandlers)kde_f_ButtonHandler
+  		(sQtUIHandlers)qt_f_ButtonHandler
 	},
 	{
 		(char *)"xf:group",
@@ -90,7 +90,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
 		(char *)"type",
 		(char *)"tabs",
 		0,
-		(sQtUIHandlers)kde_f_TabsHandler
+		(sQtUIHandlers)qt_f_TabsHandler
 	},
 		{
 		(char *)"xf:group",
@@ -98,7 +98,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
 		(char *)"type",
 		(char *)"frame",
 		1,
-		(sQtUIHandlers)kde_f_FrameHandler
+		(sQtUIHandlers)qt_f_FrameHandler
 	},
 	{
 		(char *)"xf:range",
@@ -106,7 +106,7 @@ struct sQtUIHandlers_data kde_handlers[] = {
 		(char *)0,
 		(char *)0,
 		0,
-		(sQtUIHandlers)kde_f_RangeHandler
+		(sQtUIHandlers)qt_f_RangeHandler
 	},
 	{
 		(char *)0,
@@ -175,14 +175,14 @@ else{
 		//fprintf(stdout,"\n cp-1");
 		x = 0;
 		if(temp->attr){
-			while(kde_handlers[x].type != 0){
-	if( !strcmp(temp->type,kde_handlers[x].type)){
+			while(qt_handlers[x].type != 0){
+	if( !strcmp(temp->type,qt_handlers[x].type)){
 				sXformsNodeAttr *tempattr;
 				for( tempattr = temp->attr; tempattr; tempattr=tempattr->next){
-					if( (kde_handlers[x].attrname) && (kde_handlers[x].attrvalue) && ( !strcmp(tempattr->attrName,kde_handlers[x].attrname) && !strcmp(tempattr->attrValue,kde_handlers[x].attrvalue))){
+					if( (qt_handlers[x].attrname) && (qt_handlers[x].attrvalue) && ( !strcmp(tempattr->attrName,qt_handlers[x].attrname) && !strcmp(tempattr->attrValue,qt_handlers[x].attrvalue))){
 						//fprintf(stdout,"\t 'specialised'");
 						fprintf(stdout,"\n[%s][%d] start specialised %s:%s",__func__,__LINE__,temp->type,temp->name);
-						kde_handlers[x].handler(temp,par,CallBackData,modelDocPtr,func);
+						qt_handlers[x].handler(temp,par,CallBackData,modelDocPtr,func);
 						temp->meta_info = strdup("1");  //node visited
 						break;
 					}
@@ -198,11 +198,11 @@ else{
 		
 		if(!(temp->meta_info)){
 			x = 0;
-			while(kde_handlers[x].type != 0){
-			if( !strcmp(temp->type,kde_handlers[x].type) && !kde_handlers[x].strict){
+			while(qt_handlers[x].type != 0){
+			if( !strcmp(temp->type,qt_handlers[x].type) && !qt_handlers[x].strict){
 			    //fprintf(stdout,"\t 'generic'");
 				fprintf(stdout,"\n[%s][%d] start generic %s:%s",__func__,__LINE__,temp->type,temp->name);
-				kde_handlers[x].handler(temp,par,CallBackData,modelDocPtr,func);
+				qt_handlers[x].handler(temp,par,CallBackData,modelDocPtr,func);
 				temp->meta_info = strdup("1");  //node visited
 				break;
 			}
@@ -220,7 +220,7 @@ return 0;
 }
 
 
-int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
   //fprintf(stdout,"\n[%s][%d][head = %s,%s]",__func__,__LINE__,head->type,head->name);
  	head -> meta_info = strdup("1"); 
@@ -277,7 +277,7 @@ int kde_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackD
      return 0; 
 }
 
-int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
 
      int i = 0, old_row = row;
@@ -297,7 +297,7 @@ int kde_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
      row = old_row;
 }
 
-int kde_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int ddctr = 0;
     head->meta_info = strdup("1");
@@ -332,7 +332,7 @@ int kde_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBa
 }
 
 
-int kde_f_RadioButtonList(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_RadioButtonList(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int radioctr = 0;
     head->meta_info = strdup("1");
@@ -373,7 +373,7 @@ int kde_f_RadioButtonList(sXformsNode *head,xmlNode *node,struct sCbData **CallB
     row++;
 }
 
-int kde_f_CheckBoxList(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_CheckBoxList(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int checkboxctr = 0;
     head->meta_info = (char *)"1"; 
@@ -402,7 +402,7 @@ int kde_f_CheckBoxList(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     row++;
 }
 
-int kde_f_InputHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_InputHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     
     head->meta_info = (char *)"1";
@@ -444,7 +444,7 @@ int kde_f_InputHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
     inputctr++;
 }
 
-int kde_f_LabelHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_LabelHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int labelctr = 0;
     char *labelname = sAppendString("Label_",itoa(labelctr++));
@@ -462,7 +462,7 @@ int kde_f_LabelHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBack
   	 }
 }
 
-int kde_f_ButtonHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_ButtonHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     static int btnctr = 0;
     head->meta_info = (char *)"1";
@@ -498,7 +498,7 @@ int kde_f_ButtonHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBac
     btnctr++;
 }
 
-int kde_f_RangeHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
+int qt_f_RangeHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData,xmlDoc * modelDocPtr, CallBackInterfaceFunction func)
 {
     fprintf(stdout,"\n[%s][%d] HEAD = %s:%s \t\t NODE = %s",__func__,__LINE__,head->name, head->type,node->name);
     static int sliderctr = 0;
