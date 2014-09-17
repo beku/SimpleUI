@@ -1,0 +1,6 @@
+#: sXforms.c:102
+msgid ""
+"\n"
+"== Printing Detailed Node Info =="
+msgstr "\n"
+"== TZeige detailierte Knoteninfos =="
