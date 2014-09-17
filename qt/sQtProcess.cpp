@@ -34,11 +34,11 @@ int process(char *input_xml_file, char *output_xml_file,CallBackInterfaceFunctio
 
   if(cb == 0)
   {
-    CallBackData = sQtGenerateGladeFile(head,modelDocPtr,&DummyIfFunction);
+    CallBackData = sQtGenerateDesignerFile(head,modelDocPtr,&DummyIfFunction);
   }
   else
   {
-    CallBackData = sQtGenerateGladeFile(head,modelDocPtr,cb);
+    CallBackData = sQtGenerateDesignerFile(head,modelDocPtr,cb);
   }
   print_user_data(CallBackData);
   int argc = 0;

@@ -119,7 +119,7 @@ struct sQtUIHandlers_data qt_handlers[] = {
 };
 
 
-struct sCbData * sQtGenerateGladeFile(sXformsNode *head,xmlDoc *modelDocPtr,CallBackInterfaceFunction func )
+struct sCbData * sQtGenerateDesignerFile(sXformsNode *head,xmlDoc *modelDocPtr,CallBackInterfaceFunction func )
 {
     xmlDoc *doc = NULL;
     xmlNode *root_node = NULL;

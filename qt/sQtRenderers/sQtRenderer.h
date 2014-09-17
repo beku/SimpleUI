@@ -30,7 +30,7 @@
 	};
     
     //functions defined in sGtkParseTree.c
-struct sCbData * sQtGenerateGladeFile(sXformsNode *head,xmlDoc *modelPtr,CallBackInterfaceFunction func );
+struct sCbData * sQtGenerateDesignerFile(sXformsNode *head,xmlDoc *modelPtr,CallBackInterfaceFunction func );
 int sQtGenerateUIFromTree(sXformsNode * head, xmlNode *par,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func );
 int qt_f_TabsHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func );
 int qt_f_FrameHandler(sXformsNode *head,xmlNode *node,struct sCbData **CallBackData, xmlDoc *modelPtr,CallBackInterfaceFunction func );

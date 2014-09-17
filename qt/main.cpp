@@ -152,7 +152,7 @@ fprintf(stdout,"INPUT FILE = %s\n",input_xml_file);
   //sPrintsXformsTree(head);
 
 
-  CallBackData = sQtGenerateGladeFile(head,modelDocPtr,&DummyIfFunction);
+  CallBackData = sQtGenerateDesignerFile(head,modelDocPtr,&DummyIfFunction);
   print_user_data(CallBackData);
       QApplication a(argc, argv);
     SimpleUiQt w(CallBackData);

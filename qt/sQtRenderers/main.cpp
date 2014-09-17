@@ -145,7 +145,7 @@ fprintf(stdout,"INPUT FILE = %s\n",input_xml_file);
   //sPrintsXformsTree(head);
 
 
-    cb_data = sQtGenerateGladeFile(head);
+    cb_data = sQtGenerateDesignerFile(head);
     QApplication a(argc, argv);
     SimpleUiQt w;
     w.show();
