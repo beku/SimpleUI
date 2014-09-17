@@ -10,6 +10,8 @@
 #define WriteLog
 #endif
 
+#define _(x) x
+
 void AllocateMemoryForAttribute(sXformsNodeAttr **temp)
 {
 	(*temp) = (sXformsNodeAttr *)malloc(sizeof(sXformsNodeAttr));
@@ -97,7 +99,7 @@ void sPrintsXformsNode(sXformsNode * node)
 {
 	char * NotDefined = (char *)"NotDefined";
 	if( node != 0){
-		WriteLog("\n== Printing Detailed Node Info ==");
+		WriteLog(_("\n== Printing Detailed Node Info =="));
 		WriteLog("\n Type = %s",node->type != 0 ? node->type :NotDefined );
 		WriteLog("\n Name = %s",node->name != 0 ? node->name :NotDefined );
 		WriteLog("\n Value = %s",node->value != 0 ? node->value :NotDefined );
@@ -142,10 +144,10 @@ void sPrintsXformsNode(sXformsNode * node)
 		//WriteLog("\n next = ",node->next->type,node->next->name);
 		//WriteLog("\n child = ",node->child->type,node->child->name);
 		//WriteLog("\n par = ",node->par->type,node->par->name);
-		WriteLog("\n number of children = ",node->num_child);
-		WriteLog("\n meta info = ",node->meta_info); 
-		WriteLog("\n private data = ",node->private_data);
-		WriteLog("\n ref value data = ",node->refValue);//WriteLog("\n private data = ",node->private_data);
+		WriteLog("\n number of children = %d",node->num_child);
+		WriteLog("\n meta info = %s",node->meta_info); 
+		WriteLog("\n private data = %s",node->private_data);
+		WriteLog("\n ref value data = %s",node->refValue);//WriteLog("\n private data = ",node->private_data);
 		WriteLog("\n------------------------------------------------------\n");		
 	}
 }
