@@ -54,6 +54,7 @@ void CreatePropertyNodes(xmlNode *par,char **prop_name, char **prop_type, char *
 xmlNode *Create1GeometryProp(xmlNode *par,char *x, char *y, char *width, char *height);
 xmlNode *Create1WidgetNodeWithStringProp(xmlNode *par,char *name, char *classname,char *propname, char *strval);
 xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval );
+xmlNode *CreateNumberProperty(xmlNode *par,char *propname, char *strval );
 xmlNode *CreateLayout(xmlNode *par,char *classname, char *name );
 xmlNode *CreateFrame(xmlNode *par,char *classname, char *name );
 xmlNode *CreateSpacer(xmlNode *par,char *spacerName, char *orientation, char *width, char *height, const char * row, const char * column );

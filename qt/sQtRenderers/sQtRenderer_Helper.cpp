@@ -119,6 +119,18 @@ xmlNode *CreateStringProperty(xmlNode *par,char *propname, char *strval )
   xmlAddChild(par,new_node);
 }
 
+xmlNode *CreateNumberProperty(xmlNode *par,char *propname, char *strval )
+{
+  xmlNode *new_node = NULL;
+  new_node = CreateXmlNode(NULL,"property");
+  CreateNodeAttribute(new_node,"name",propname); 
+  if ( strval != 0)
+  {
+      Create1ObjectNode(new_node,"number",strval);
+  }
+  xmlAddChild(par,new_node);
+}
+
 xmlNode *CreateFrame(xmlNode *par,char *classname, char *name )
 {
   xmlNode *frameNode = Create1ObjectNode(par,"widget",0);
