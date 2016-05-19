@@ -144,8 +144,14 @@ void SimpleUiQt::on_QComboBox_current_index_change(const QString & text)
     {
       if( !strcmp(temp->name,combobox->objectName().toStdString().c_str()))
       {
-        if( strcmp(temp->ref,"0")  && strcmp(temp->init_val,"READONLY")){ 
-          UpdateModelandCallUserFunction(temp->ref,value,cb_data);
+        if( strcmp(temp->ref,"0") && strcmp(temp->init_val,"READONLY")){ 
+          struct sCbValue *v = temp->values;
+          while(v)
+          {
+            if(QString(value) == QString(v->ui_string))
+              UpdateModelandCallUserFunction(temp->ref, v->value, cb_data);
+            v = v->next;
+          }
         }
         FindReferencesAndUpdateData(temp->name);
         break;
@@ -356,5 +362,16 @@ void SimpleUiQt::UpdateWidgetValue(char *type,char*value,char *name)
     QLineEdit *input = qFindChild<QLineEdit *>(this, name);
     input->setText(value);
     //input->setText(val);
+  }
+  else  if( !strcmp(type,"QComboBox"))
+  {
+    QComboBox *combo = qFindChild<QComboBox *>(this, name);
+    for( int i = 0; i < combo->count(); ++i )
+    {
+      QVariant v = combo->itemData( i, Qt::UserRole );
+      QString vs = v.toString();
+      if(QString(value) == combo->itemText(i))
+        combo->setCurrentIndex(i);
+    }
   }
 }

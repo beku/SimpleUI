@@ -14,12 +14,19 @@
 
 typedef void (*CallBackInterfaceFunction)(xmlDoc *ModelDocPtr);
 
+struct sCbValue {
+    const char * ui_string;
+    const char * value;
+    struct sCbValue *next;
+};
+
 struct sCbData{
     char *ref;
     char *init_val;
     char *value;
     char *name;
     char *meta_info;
+    struct sCbValue *values;
     xmlDoc *doc;
     CallBackInterfaceFunction cbFunction;
     struct sCbData *next;
@@ -35,8 +42,8 @@ struct sCbData * AppendNode(struct sCbData **head,const char *ref_,const char *i
     void DummyIfFunction(xmlDoc *ptr);
 
 int UpdateModel(struct sCbData * head);
-void UpdateCallbackData(char *ref, char *data, struct sCbData *list);
-void UpdateModelandCallUserFunction(char *ref, char *data,struct sCbData *list );
+void UpdateCallbackData(const char *ref, const char *data, struct sCbData *list);
+void UpdateModelandCallUserFunction(const char *ref, const char *data,struct sCbData *list );
 int UpdateRefsFromModel(struct sCbData * head);
 
 #ifdef __cplusplus

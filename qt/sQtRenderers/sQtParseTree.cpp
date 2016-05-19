@@ -308,10 +308,12 @@ int qt_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBac
     xmlNode *dditem = CreateItemNode(node,0,itoa(row),int2str[2]);
     xmlNode *dd = Create1WidgetNode(dditem,sAppendString("DD_",itoa(ddctr)),"QComboBox",0,0,0,0);
     //AppendNode(CallBackData,"NULL-REFERENCE", "NULL-INITVAL","NULL-VAL",sAppendString("DD_",int2str[ddctr]),"QComboBox");
-        sXformsNodeAttr *attr = getAttrFromList(head,"ref");
+    xmlNode *dd_prop = CreateNumberProperty(dd,"currentIndex",head->value);
+    sXformsNodeAttr *attr = getAttrFromList(head,"ref");
+    sCbData * d = NULL;
           	 if(attr)
           	 {
-          	    AppendNode(CallBackData,s_dupstr(attr->meta_info),s_dupstr(attr->private_data),(char *)0,sAppendString("DD_",itoa(ddctr)),"QComboBox",modelDocPtr,func);
+          	    d = AppendNode(CallBackData,s_dupstr(attr->meta_info),s_dupstr(attr->private_data),s_dupstr(head->value),sAppendString("DD_",itoa(ddctr)),"QComboBox",modelDocPtr,func);
           	 }
           	 else
           	 {
@@ -320,12 +322,23 @@ int qt_f_Select1Handler(sXformsNode *head,xmlNode *node,struct sCbData **CallBac
     sXformsNode *temp;
     sXformsNode *xfchoices = SearchSubTreeForNodes(head,(char *)"xf:choices",(sXformsNodeAttr *)0,0,0);
     if( xfchoices ){
-			xfchoices->meta_info = strdup("1");
-			for( temp=xfchoices->child; temp != 0; temp=temp->next){
-			    temp->meta_info = strdup(int2str[1]);
+        xfchoices->meta_info = strdup("1");
+        struct sCbValue * v = NULL;
+        for( temp=xfchoices->child; temp != 0; temp=temp->next){
+          temp->meta_info = strdup(int2str[1]);
           xmlNode *choice = CreateItemNode(dd,0,0,0);
           CreateStringProperty(choice,"text", temp->name);
-			}
+
+          if(temp == xfchoices->child)
+            v = d->values = (sCbValue*) calloc(sizeof(sCbValue),1);
+          else
+          {
+            v->next = (sCbValue*) calloc(sizeof(sCbValue),1);
+            v = v->next;
+          }
+	  v->ui_string = temp->name;
+          v->value = temp->value;
+        }
     }
     ddctr++;
     row++;

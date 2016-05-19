@@ -21,6 +21,7 @@ struct sCbData * AllocateMemoryForCBNode()
 		(node)->value= (char *)0;
 		(node)->name= (char *)0;
 		(node)->meta_info= (char *)0;
+		(node)->values= (struct sCbValue *)0;
 		(node)->next = (struct sCbData *)0;
 		(node)->prev= (struct sCbData *)0;
 		(node)->nextref = (struct sCbData *)0;
@@ -45,6 +46,7 @@ struct sCbData * AppendNode(struct sCbData **head,const char *ref_, const char *
 		newnode->value = s_dupstr(value_);
 		newnode->init_val = s_dupstr(init_val_);
 		newnode->meta_info = s_dupstr(meta_info_);
+                newnode->values = NULL;
 		newnode->cbFunction = _cbFunction;
 		newnode->doc = _doc;
 		struct sCbData *temp = (*head);
@@ -97,11 +99,11 @@ void print_user_data(struct sCbData *head)
 	fprintf(stdout,"\n == PRINTING USER DATA == \n");
 	while( temp != 0)
 	{
-		fprintf(stdout,"( %s,%s,%s,%s,%s )\n",temp->ref,temp->init_val,temp->value,temp->name,temp->meta_info);
+		fprintf(stdout,"( %s,%s,%s,%s,%s )\n",temp->ref,temp->init_val,temp->value?temp->value:"null",temp->name,temp->meta_info);
 		temp2 = temp->nextref;
 		while( temp2 )
 		{
-			fprintf(stdout,"\t -> ( %s,%s,%s,%s,%s )\n",temp2->ref,temp2->init_val,temp2->value,temp2->name,temp2->meta_info);
+			fprintf(stdout,"\t -> ( %s,%s,%s,%s,%s )\n",temp2->ref,temp2->init_val,temp2->value?temp2->value:"null",temp2->name,temp2->meta_info);
 			temp2 = temp2->next;
 		}
 		temp = temp->next;
@@ -122,7 +124,7 @@ struct sCbData *get_pointer_to_user_data_by_name(const char *_name, struct sCbDa
 	return (struct sCbData *)0;
 }
 
-void UpdateModelandCallUserFunction(char *ref, char *data,struct sCbData *list )
+void UpdateModelandCallUserFunction(const char *ref, const char *data,struct sCbData *list )
 {
   // 1. update all references
   UpdateCallbackData(ref,data,list);
@@ -135,7 +137,7 @@ void UpdateModelandCallUserFunction(char *ref, char *data,struct sCbData *list )
   //print_user_data(list);
 }
 
-void UpdateCallbackData(char *ref, char *data, struct sCbData *list)
+void UpdateCallbackData(const char *ref, const char *data, struct sCbData *list)
 {
   if(strcmp(ref,"0")){
   struct sCbData *temp;
