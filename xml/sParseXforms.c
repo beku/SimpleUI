@@ -50,6 +50,121 @@ sXformsNode * ParseXformsToTree(const char * xforms, xmlDoc **modelDocPtr){
 	return head;
 }
 
+const char * sXFORMsModelGetXPathValue_
+                                     ( xmlDocPtr           doc,
+                                       const char        * reference )
+{
+  char * xpath = (char*) malloc(1024);
+  xmlXPathContextPtr context = xmlXPathNewContext( doc );
+  xmlXPathObjectPtr result = 0;
+  int error = 0;
+  const char * ref, * url;
+  const char * text = 0;
+
+  memset(xpath, 0, 1024);
+
+  if( reference )
+  {
+    ref = "xmlns";
+    url = "http://www.w3.org/1999/xhtml";
+    error = xmlXPathRegisterNs( context, (xmlChar*)ref, (xmlChar*)url);
+    if(error)
+      printf("Could not register %s=%s\n", ref, url);
+    ref = "xf";
+    url = "http://www.w3.org/2002/xforms";
+    error = xmlXPathRegisterNs( context, (xmlChar*)ref, (xmlChar*)url);
+    if(error)
+      printf("Could not register %s=%s\n", ref, url);
+
+    /* add the static part */
+    sprintf( xpath, "/xmlns:html/xmlns:head/xf:model/xf:instance" );
+
+    xpath = sAppendString( xpath, reference );
+    result = xmlXPathEvalExpression( (xmlChar*)xpath, context );
+
+    if( result && !xmlXPathNodeSetIsEmpty( result->nodesetval ) &&
+        result->nodesetval &&
+        result->nodesetval->nodeTab && result->nodesetval->nodeTab[0] &&
+        result->nodesetval->nodeTab[0]->children &&
+        strcmp((char*)result->nodesetval->nodeTab[0]->children->name, "text") == 0 &&
+        result->nodesetval->nodeTab[0]->children->content)
+      text = (char*)result->nodesetval->nodeTab[0]->children->content;
+    else
+      printf( "No result with %s\n", xpath);
+
+    xmlXPathFreeObject( result );
+    xmlXPathFreeContext( context );
+  }
+
+  if(xpath)
+    free(xpath);
+
+  return text;
+}
+
+/** Function sXFORMsModelGetAttrValue
+ *  @brief   get the xml elements attribute value
+ *
+ *  @param[in]     cur                 the libxml2 node
+ *  @param[in]     attr_name           the nodes attribute
+ *  @return                            the attributes value
+ *
+ *  @version Oyranos: 0.3.2
+ *  @since   2011/07/31 (Oyranos: 0.3.2)
+ *  @date    2011/07/31
+ */
+const char *       sXFORMsModelGetAttrValue (
+                                       xmlNodePtr          cur,
+                                       const char        * attr_name )
+{
+  const char * v = 0;
+  xmlAttrPtr attr = 0;
+
+  /* search a entry node */
+  attr = cur->properties;
+  while(attr && attr->name)
+  {
+    if( strcmp((char*)attr->name, attr_name) == 0 &&
+        attr->children->content )
+    {
+      v = (const char*)attr->children->content;
+    }
+
+    attr = attr->next;
+  }
+  return v;
+}
+
+/** Function sXFORMsModelGetXPathValue
+ *  @brief   get the xforms model value of a corresponding layout node
+ *
+ *  @param[in]     cur                 the libxml2 node
+ *  @param[in]     attr_name           the nodes attribute, only "ref" ?
+ *  @param[out]    xpath               the xpath of the referenced key
+ *  @return                            the attributes value
+ *
+ *  @version Oyranos: 0.1.10
+ *  @since   2009/11/11 (Oyranos: 0.1.10)
+ *  @date    2009/11/11
+ */
+const char *       sXFORMsModelGetXPathValue (
+                                       xmlNodePtr          cur,
+                                       const char        * attr_name,
+                                       const char       ** xpath )
+{
+  const char * v = 0;
+  const char * attr = 0;
+
+  /* search a entry node */
+  attr = sXFORMsModelGetAttrValue( cur, attr_name );
+  if( attr )
+  {
+    v = sXFORMsModelGetXPathValue_( cur->doc,(char*)attr);
+    if(xpath)
+      *xpath = attr;
+  }
+  return v;
+}
 void sParseNodesAndMakeTree(xmlNodePtr cur,sXformsNode **par, sXformsNode * head, xmlDocPtr doc, xmlDoc **modelDocPtr)
 {
 	char *type = (char *)0;
@@ -96,6 +211,14 @@ void sParseNodesAndMakeTree(xmlNodePtr cur,sXformsNode **par, sXformsNode * head
 			//3. make an attributes list
 			if( cur->properties){
 				temp->attr = MakeAttributesList(cur,doc);
+                                if( temp->attr && temp->attr->attrName && strcmp(temp->attr->attrName,"ref") == NULL)
+                                {
+                                  const char * xpath = NULL;
+                                  const char * v = sXFORMsModelGetXPathValue (
+                                                   cur, temp->attr->attrName, &xpath );
+                                  if(v && temp->value) free(temp->value);
+                                  temp->value = s_dupstr(v);
+                                }
 			}
 			//4. mark this node as visited
 			cur->extra = 4;
@@ -109,7 +232,7 @@ void sParseNodesAndMakeTree(xmlNodePtr cur,sXformsNode **par, sXformsNode * head
 }
 
 void makemodel(xmlNodePtr cur, xmlDoc **modelDocPtr){
-	(*modelDocPtr) = xmlNewDoc(BAD_CAST "1.0");
+   (*modelDocPtr) = xmlNewDoc(BAD_CAST "1.0");
    xmlNodePtr copy = xmlCopyNode(cur,1);
    if(copy != NULL)
    {
